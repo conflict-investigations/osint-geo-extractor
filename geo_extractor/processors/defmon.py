@@ -45,20 +45,18 @@ class DefmonProcessor():
         events = []
 
         DATE_INPUT_FORMAT = '%Y%m%d'
-        DATE_OUTPUT_FORMAT = '%Y-%m-%d'
 
         def format_event(date, event):
-            date_formatted = datetime.strptime(
-                date, DATE_INPUT_FORMAT
-            ).strftime(DATE_OUTPUT_FORMAT)
+            date_parsed = datetime.strptime(date, DATE_INPUT_FORMAT)
             coordinates = event.get('points')[0]
             return Event(
                 id=event.get('id'),
-                date=date_formatted,
+                date=date_parsed,
                 latitude=float(coordinates[0]),
                 longitude=float(coordinates[1]),
-                place_desc=None,
-                title=event.get('title'),
+                # 'title' field is the place name most of the time
+                place_desc=event.get('title'),
+                title=None,
                 description=None,
                 sources=[],
             )
