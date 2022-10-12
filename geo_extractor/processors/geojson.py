@@ -18,6 +18,8 @@ def format_feature(f):
             title=f.title,
             date=f.date,
             description=f.description,
+            links=f.links,
+            source=f.source,
         ),
     )
 
@@ -42,11 +44,14 @@ def format_as_geojson(data):
             ),
             properties=dict(
                 title=f.properties.title,
-                date=f.properties.date.strftime("%Y-%m-%d"),
+                date=(f.properties.date.strftime("%Y-%m-%d")
+                      if f.properties.date else None),
                 description=f.properties.description,
+                links=f.properties.links,
+                source=f.properties.source,
             ),
         ))
     return json.dumps(dict(
         type='FeatureCollection',
         features=formatted
-    ))
+    ), indent=2)

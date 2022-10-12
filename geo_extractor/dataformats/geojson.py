@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from typing import List
 
 @dataclass
@@ -13,9 +13,11 @@ class Geometry():
 
 @dataclass
 class FeatureProperties():
-    title: str
-    date: str
-    description: str
+    title: str = None
+    date: str = None
+    description: str = None
+    links: str = field(default_factory=list)
+    source: str = None
 
     @property
     def __dict__(self):

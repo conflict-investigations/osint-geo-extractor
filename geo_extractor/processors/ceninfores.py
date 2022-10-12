@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+from ..constants import SOURCE_NAMES
 from ..dataformats import Event
 
 link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
@@ -62,7 +63,8 @@ class CenInfoResProcessor():
                 place_desc=None,
                 title=props.get('title'),
                 description=props['description'],
-                sources=sources,
+                links=sources,
+                source=SOURCE_NAMES.CENINFORES,
             )
             events.append(event)
 

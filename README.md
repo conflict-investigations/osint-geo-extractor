@@ -1,4 +1,4 @@
-# geo-extractor
+# geo_extractor
 
 Library to extract geo-related information from databases such as
 [Bellingcat](https://ukraine.bellingcat.com/),
@@ -6,8 +6,79 @@ Library to extract geo-related information from databases such as
 [GeoConfirmed](https://geoconfirmed.azurewebsites.net/) and
 [DefMon3](https://www.scribblemaps.com/maps/view/2022051301800/nBT8ffpeGH).
 
+## Installation
+Install from [PyPI](https://pypi.org/project/osint-geo-extractor/):
+```
+pip install osint-geo-extractor
+```
+
 ## Usage
-See `examples/` folder
+
+```python
+from geo_extractor import get_bellingcat_data
+events = get_bellingcat_data()
+for e in events[:10]:
+    print(f"{e.id}: [{e.latitude}, {e.longitude}]")
+```
+
+See also the `examples/` folder.
+
+## Docs
+
+Convenience functions:
+
+- `get_bellingcat_data`
+- `get_ceninfores_data`
+- `get_defmon_data`
+- `get_geoconfirmed_data`
+
+Data is returned as a list of `Event` objects:
+
+Field            | Type
+---------------- | ----
+id               | str
+date             | datetime
+latitude         | float
+longitude        | float
+place_desc       | str
+title            | str
+description      | str
+source           | str
+links            | List[str]
+
+Data formats: See `dataformats/`
+
+Exporting to **GeoJSON**: Use `processors.format_as_geojson(data)`
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "CIV0001",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.659031,
+          49.85005
+        ]
+      },
+      "properties": {
+        "title": "<title>",
+        "date": "2022-02-24",
+        "description": "<desc>",
+        "links": [
+          "https://twitter.com/Michael1Sheldon/status/1496717647089651716",
+          "https://twitter.com/AFP/status/1496768532448788482"
+        ],
+        "source": "BELLINGCAT"
+      }
+    }
+  ]
+}
+```
+
 
 ## License
 MIT

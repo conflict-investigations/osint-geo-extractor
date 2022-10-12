@@ -1,3 +1,4 @@
+import json
 from geo_extractor.processors import (
     BellingcatProcessor,
     CenInfoResProcessor,
@@ -6,7 +7,7 @@ from geo_extractor.processors import (
     format_as_geojson
 )
 
-from fixtures import (  # noqa
+from .fixtures import (  # noqa
     bellingcat_raw,
     ceninfores_raw,
     defmon_raw,
@@ -24,7 +25,7 @@ def test_bellingcat_geojson(bellingcat_raw):  # noqa
 
     events = b_processor.extract_events(bellingcat_raw)
     events_geojson = format_as_geojson(events)
-    assert events_geojson.features[0].id == 'CIV0001'
+    assert json.loads(events_geojson)['features'][0]['id'] == 'CIV0001'
 
 def test_ceninfores_processor_extract(ceninfores_raw):  # noqa
     c_processor = CenInfoResProcessor()
@@ -37,7 +38,7 @@ def test_ceninfores_geojson(ceninfores_raw):  # noqa
 
     events = c_processor.extract_events(ceninfores_raw)
     events_geojson = format_as_geojson(events)
-    assert events_geojson.features[0].id == 'UW14014'
+    assert json.loads(events_geojson)['features'][0]['id'] == 'UW14014'
 
 def test_defmon_processor_extract(defmon_raw):  # noqa
     d_processor = DefmonProcessor()
@@ -53,11 +54,12 @@ def test_defmon_geojson(defmon_raw):  # noqa
 
     shellings_data = d_processor.extract_events(defmon_raw, 'Shellings')
     shellings_geojson = format_as_geojson(shellings_data)
-    assert shellings_geojson.features[0].id == '4cd03b2245'
+    assert json.loads(shellings_geojson)['features'][0]['id'] == '4cd03b2245'
 
     firms_data = d_processor.extract_events(defmon_raw, 'FIRMS Data')
     firms_geojson = format_as_geojson(firms_data)
-    assert firms_geojson.features[0].id == '8c68f57511f24377b537975898379e70'
+    assert json.loads(firms_geojson)['features'][0]['id'] \
+        == '8c68f57511f24377b537975898379e70'
 
 def test_geoconfirmed_processor_extract(geoconfirmed_raw):  # noqa
     g_processor = GeoConfirmedProcessor()
@@ -70,4 +72,5 @@ def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
 
     events = g_processor.extract_events(geoconfirmed_raw)
     events_geojson = format_as_geojson(events)
-    assert events_geojson.features[0].id == '1579544005448433664'
+    assert json.loads(events_geojson)['features'][0]['id'] \
+        == '1579544005448433664'

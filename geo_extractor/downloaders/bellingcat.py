@@ -1,8 +1,9 @@
 import json
+from dataclasses import asdict, dataclass, field
 from urllib import request
+from typing import List
 
 from .base import Downloader
-from ..dataformats import Association, Event, Source
 
 BELLINGCAT_BASE = 'https://ukraine.bellingcat.com/ukraine-server/api/ukraine'
 EVENTS_ENDPOINT = BELLINGCAT_BASE + '/export_events/deeprows'
@@ -10,6 +11,36 @@ SOURCES_ENDPOINT = BELLINGCAT_BASE + '/export_sources/deepids'
 ASSOCIATIONS_ENDPOINT = BELLINGCAT_BASE + '/export_associations/deeprows'
 
 ENCODING = 'utf-8'
+
+@dataclass
+class BellingcatEvent():
+    id: str = None
+    date: str = None
+    latitude: float = None
+    longitude: float = None
+    place_desc: str = None
+    title: str = None
+    description: str = None
+    sources: List['Source'] = field(default_factory=list)
+    # Filters only relevant for Bellingcat entries
+    filters: List['Association'] = field(default_factory=list)
+
+    # https://www.delftstack.com/howto/python/dataclass-to-json-in-python/
+    @property
+    def __dict__(self):
+        return asdict(self)
+
+@dataclass
+class Source():
+    path: str
+    id: str = None
+    description: str = None
+
+# Associations only relevant for Bellingcat entries
+@dataclass
+class Association():
+    key: str
+    value: str
 
 class BellingcatDownloader(Downloader):
     """
@@ -47,7 +78,7 @@ class BellingcatDownloader(Downloader):
 
     def _mangle(self, e):
         eventid = e.get('id')
-        return Event(
+        return BellingcatEvent(
             id=eventid,
             date=e.get('date'),
             latitude=e.get('latitude'),

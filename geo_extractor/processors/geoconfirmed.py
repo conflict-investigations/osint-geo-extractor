@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+from ..constants import SOURCE_NAMES
 from ..dataformats import Event
 
 link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
@@ -60,7 +61,8 @@ class GeoConfirmedProcessor():
                     place_desc=None,
                     title=item.get('name'),
                     description=item.get('description'),
-                    sources=sources,
+                    links=sources,
+                    source=SOURCE_NAMES.GEOCONFIRMED,
                 )
                 events.append(event)
 

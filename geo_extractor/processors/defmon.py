@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from ..constants import SOURCE_NAMES
 from ..dataformats import Event
 
 # "name": "War in Ukraine",
@@ -58,7 +59,8 @@ class DefmonProcessor():
                 place_desc=event.get('title'),
                 title=None,
                 description=None,
-                sources=[],
+                links=[],
+                source=SOURCE_NAMES.DEFMON,
             )
 
         def is_relevant_aspect(overlay, eventtype):

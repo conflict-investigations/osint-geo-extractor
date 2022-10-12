@@ -17,7 +17,7 @@ print('Finished downloading')
 # import json
 # from geo_extractor.constants import RAW_DATA_FILENAMES
 # with open(RAW_DATA_FILENAMES.DEFMON, 'w') as f:
-#     json.dump(f, data)
+#     json.dump(data, f)
 
 # Load from disk:
 # with open(RAW_DATA_FILENAMES.DEFMON, 'r') as f:
