@@ -1,7 +1,7 @@
 import json
 from dataclasses import asdict, dataclass, field
 from urllib import request
-from typing import List
+from typing import Any, List, Optional
 
 from .base import Downloader
 
@@ -14,27 +14,27 @@ ENCODING = 'utf-8'
 
 @dataclass
 class BellingcatEvent():
-    id: str = None
-    date: str = None
-    latitude: float = None
-    longitude: float = None
-    place_desc: str = None
-    title: str = None
-    description: str = None
+    id: str
+    date: str
+    latitude: float
+    longitude: float
+    place_desc: str
+    title: str
+    description: str
     sources: List['Source'] = field(default_factory=list)
     # Filters only relevant for Bellingcat entries
     filters: List['Association'] = field(default_factory=list)
 
     # https://www.delftstack.com/howto/python/dataclass-to-json-in-python/
     @property
-    def __dict__(self):
+    def __dict__(self) -> dict:
         return asdict(self)
 
 @dataclass
 class Source():
     path: str
-    id: str = None
-    description: str = None
+    id: str
+    description: str
 
 # Associations only relevant for Bellingcat entries
 @dataclass
@@ -47,11 +47,11 @@ class BellingcatDownloader(Downloader):
     Format data as it would appear when clicking the 'export' button
     """
 
-    def __init__(self):
-        self.data = {}
+    def __init__(self) -> None:
+        self.data = {}  # type: dict[str, Any]
 
     @staticmethod
-    def _download():
+    def _download() -> dict:
         data = {}
         data['events'] = json.loads(
             request.urlopen(EVENTS_ENDPOINT).read().decode(ENCODING))
@@ -61,22 +61,20 @@ class BellingcatDownloader(Downloader):
             request.urlopen(ASSOCIATIONS_ENDPOINT).read().decode(ENCODING))
         return data
 
-    def _get_source(self, source_id, event_id):
+    def _get_source(self, source_id: str, event_id: str) -> Source:
         src = self.data['sources'].get(source_id)
         return Source(id=event_id, path=src.get('paths')[0],
-                    description=src.get('description'))
+                      description=src.get('description'))
 
-    def _get_association(self, association):
-        assoc = list(filter(None,
-            (a for a in self.data['associations']
-                if a.get('id') == association)
-        ))[0]
-        return Association(
-            key=assoc['filter_paths'][0],
-            value=assoc['filter_paths'][1]
-        )
+    def _get_association(self, association: str) -> Optional[Association]:
+        for a in self.data['associations']:
+            if a.get('id') == association:
+                return Association(
+                    key=a['filter_paths'][0],
+                    value=a['filter_paths'][1]
+                )
 
-    def _mangle(self, e):
+    def _mangle(self, e: dict) -> BellingcatEvent:
         eventid = e.get('id')
         return BellingcatEvent(
             id=eventid,
@@ -86,11 +84,14 @@ class BellingcatDownloader(Downloader):
             place_desc=e.get('location'),
             title=None,
             description=e.get('description'),
-            sources=[self._get_source(s, eventid) for s in e.get('sources')],
-            filters=[self._get_association(a) for a in e.get('associations')],
+            sources=list(self._get_source(s, eventid)
+                         for s in e.get('sources')),
+            filters=list(self._get_association(a)
+                         for a in e.get('associations')),
         )
 
-    def download(self):
+    # TODO: Static method conversion? carrying instance state?
+    def download(self) -> Any:
         self.data = self._download()
         return [self._mangle(e).__dict__ for e in self.data['events']]
 

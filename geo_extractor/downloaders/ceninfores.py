@@ -1,5 +1,6 @@
 import json
 from urllib import request
+from typing import Any
 
 from .base import Downloader
 
@@ -17,7 +18,7 @@ class CenInfoResDownloader(Downloader):
     """
 
     @staticmethod
-    def download():
+    def download() -> Any:
         headers = {
             'Content-Type': 'application/json',
             'User-Agent': USER_AGENT,

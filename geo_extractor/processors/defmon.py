@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any, List
 
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
@@ -33,7 +34,7 @@ WAR_IN_UKRAINE_ID = 'f4a2b60dad'
 
 class DefmonProcessor():
     @staticmethod
-    def extract_events(data, eventtype):
+    def extract_events(data, eventtype: str = 'Shellings') -> List[Event]:
         overlays = data.get('overlays')
 
         war_in_ukraine = list(filter(
@@ -47,7 +48,7 @@ class DefmonProcessor():
 
         DATE_INPUT_FORMAT = '%Y%m%d'
 
-        def format_event(date, event):
+        def format_event(date: str, event: dict[str, Any]) -> Event:
             date_parsed = datetime.strptime(date, DATE_INPUT_FORMAT)
             coordinates = event.get('points')[0]
             return Event(
@@ -59,11 +60,11 @@ class DefmonProcessor():
                 place_desc=event.get('title'),
                 title=None,
                 description=None,
-                links=[],
+                links=(),
                 source=SOURCE_NAMES.DEFMON,
             )
 
-        def is_relevant_aspect(overlay, eventtype):
+        def is_relevant_aspect(overlay: dict, eventtype: str) -> bool:
             # Use 'x in y' to match partial strings
             return (overlay.get('name') or '').startswith(eventtype)
 

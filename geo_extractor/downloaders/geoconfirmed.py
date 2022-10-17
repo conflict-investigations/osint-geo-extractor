@@ -1,5 +1,6 @@
 import json
 from urllib import request
+from typing import Any
 
 from .base import Downloader
 
@@ -15,7 +16,7 @@ class GeoConfirmedDownloader(Downloader):
     """
 
     @staticmethod
-    def download():
+    def download() -> Any:
         resp = request.urlopen(GEOCONFIRMED_ENDPOINT)
         data = json.loads(resp.read().decode(ENCODING))
         return data

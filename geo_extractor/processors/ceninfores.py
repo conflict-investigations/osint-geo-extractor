@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from typing import List, Optional
 
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
@@ -9,11 +10,11 @@ entry_extract_regex = r"ENTRY: (\w+)[\n]?"
 
 class CenInfoResProcessor():
     @staticmethod
-    def extract_events(data, eventtype=None):
+    def extract_events(data, eventtype: str = None) -> List[Event]:
         DATE_INPUT_FORMAT = '%d/%m/%Y'
         events = []
 
-        def parse_date(d):
+        def parse_date(d: str) -> Optional[datetime]:
             try:
                 return datetime.strptime(d, DATE_INPUT_FORMAT)
             except ValueError:
@@ -28,15 +29,15 @@ class CenInfoResProcessor():
             if (date_raw := props.get('title')):
                 date = parse_date(date_raw[:10])
 
-            sources = []
+            links = []  # type: List[str]
             if (url := props.get('media_url')):
-                sources.append(url)
-            if (links := re.findall(link_extract_regex,
-                                    props['description'])):
-                sources.extend((link for link, _unused in links))
+                links.append(url)
+            if (matches := re.findall(link_extract_regex,
+                                      props['description'])):
+                links.extend((link for link, _unused in matches))
 
             # Remove duplicate URLs
-            sources = list(set(sources))
+            sources = list(set(links))  # type: List[str]
 
             entryid = None
             if (candidate := re.findall(entry_extract_regex,

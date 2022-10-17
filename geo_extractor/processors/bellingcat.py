@@ -1,22 +1,26 @@
 from datetime import datetime
+from typing import Any, List
 
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
 
 class BellingcatProcessor():
     @staticmethod
-    def extract_events(data, eventtype=None):
+    def extract_events(data: List[Any], eventtype: str = None) -> List[Event]:
         DATE_INPUT_FORMAT = '%m/%d/%Y'
         events = []
         # Convert JSON strings to datetime objects, set links
-        for event in data:
-            links = [s['path'] for s in event.pop('sources')]
-            event.pop('filters')
-            e = Event(**event)
-            e.date = datetime.strptime(e.date, DATE_INPUT_FORMAT)
-            e.latitude = float(e.latitude)
-            e.longitude = float(e.longitude)
-            e.source = SOURCE_NAMES.BELLINGCAT
-            e.links = links
-            events.append(e)
+        for e in data:
+            links = [s.get('path') for s in e.get('sources')]
+            event = Event(
+                id=e.get('id'),
+                date=datetime.strptime(e.get('date'), DATE_INPUT_FORMAT),
+                latitude=float(e.get('latitude')),
+                longitude=float(e.get('longitude')),
+                place_desc=e.get('place_desc'),
+                title=e.get('title'),
+                source=SOURCE_NAMES.BELLINGCAT,
+                links=links,
+            )
+            events.append(event)
         return events

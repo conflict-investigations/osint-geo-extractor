@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from typing import Any, List, Optional
 
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
@@ -9,11 +10,11 @@ geoconfirmed_regex = r"https://twitter\.com/GeoConfirmed/status/(\d+)([ ,\n]|$)"
 
 class GeoConfirmedProcessor():
     @staticmethod
-    def extract_events(data, eventtype=None):
+    def extract_events(data, eventtype: str = None) -> List[Event]:
 
         events = []
 
-        def is_relevant(folder):
+        def is_relevant(folder: dict[str, Any]) -> bool:
             # Filter out metadata folders
             if folder.get('name')[:2] in ('A.', 'B.'):
                 return False
@@ -27,7 +28,7 @@ class GeoConfirmedProcessor():
         # Example: "2022-10-10T16:20:00"
         DATE_INPUT_FORMAT = "%Y-%m-%dT%H:%M%S"
 
-        def parse_date(d):
+        def parse_date(d: str) -> Optional[datetime]:
             # Note: e.g. twitter.com/GeoConfirmed/status/1579567301963440128
             # has a wrong date (twitter id instead of date string)
             try:
@@ -41,12 +42,12 @@ class GeoConfirmedProcessor():
                 continue
 
             for item in placemarks:
-                sources = []
+                sources = []  # type: List[str]
                 if (links := re.findall(link_extract_regex,
                                         item.get('description'))):
                     sources.extend((link for link, _unused in links))
 
-                def get_id(desc):
+                def get_id(desc: str) -> Optional[str]:
                     status = re.findall(geoconfirmed_regex, desc)
                     if status:
                         return status[0][0]
@@ -61,7 +62,7 @@ class GeoConfirmedProcessor():
                     place_desc=None,
                     title=item.get('name'),
                     description=item.get('description'),
-                    links=sources,
+                    links=tuple(sources),
                     source=SOURCE_NAMES.GEOCONFIRMED,
                 )
                 events.append(event)

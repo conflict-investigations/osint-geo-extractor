@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-ENCODING = 'utf-8'
+ENCODING: str = 'utf-8'
 
 # XXX use this more
-link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
+link_extract_regex: str = r"(https?://.+?)([ ,\n\\<>]|$)"
 
 @dataclass
 class RAW_DATA_FILENAMES():
