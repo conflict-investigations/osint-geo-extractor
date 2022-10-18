@@ -8,8 +8,17 @@ from urllib.error import HTTPError, URLError
 ENCODING = 'utf-8'
 USER_AGENT = 'media_search/0.0.1 - github.com/conflict-investigations/media-search-engine'  # noqa
 
-TIMEOUT = 60
-MAX_RETRIES = 5
+MAX_RETRIES = 10
+TIMEOUT = 60  # seconds
+BACKOFF_FACTOR = 3  # seconds
+
+# https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/
+# Algorithm:
+# {backoff factor} * (2 ** ({number of total retries} - 1))
+# For example, if the backoff factor is set to:
+#  1 second the successive sleeps will be 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256
+#  2 seconds - 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
+#  10 seconds - 5, 10, 20, 40, 80, 160, 320, 640, 1280, 2560
 
 class Downloader():
     """
@@ -39,17 +48,15 @@ class Downloader():
                                  timeout=timeout) as resp:
                 return resp.read().decode(ENCODING)
 
-        def _fetch_as_json(req: request.Request) -> Any:
-            return json.loads(_fetch(req))
-
         r = 0
         while r < retries:
+            wait = BACKOFF_FACTOR * (2 ** (r - 1))
             try:
-                return _fetch_as_json(_req)
+                return json.loads(_fetch(_req))
             except HTTPError as e:
                 r += 1
                 print(f"HTTPError, retrying. e={e}")
-                time.sleep(60)
+                time.sleep(wait)
                 continue
             except URLError as e:
                 r += 1
@@ -57,5 +64,6 @@ class Downloader():
                     print("Socket timeout, retrying")
                     continue
                 print(f"URLError, retrying. e={e}")
-                time.sleep(10)
+                time.sleep(wait)
+        # No success after max retries, raise error:
         raise HTTPError
