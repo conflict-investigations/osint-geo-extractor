@@ -16,7 +16,7 @@ def test_defmon_downloader():
 def test_bellingcat_downloader():
     d = BellingcatDownloader()
     data = d.download()
-    assert data['events'][0]['id'] == 'CIV0001'
+    assert data[0]['id'] == 'CIV0001'
 
 def test_ceninfores_downloader():
     d = CenInfoResDownloader()

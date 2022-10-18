@@ -31,14 +31,14 @@ def test_ceninfores_processor_extract(ceninfores_raw):  # noqa
     c_processor = CenInfoResProcessor()
 
     events = c_processor.extract_events(ceninfores_raw)
-    assert events[0].id == 'UW14014'
+    assert events[0].id == 'UW14492'
 
 def test_ceninfores_geojson(ceninfores_raw):  # noqa
     c_processor = CenInfoResProcessor()
 
     events = c_processor.extract_events(ceninfores_raw)
     events_geojson = format_as_geojson(events)
-    assert json.loads(events_geojson)['features'][0]['id'] == 'UW14014'
+    assert json.loads(events_geojson)['features'][0]['id'] == 'UW14492'
 
 def test_defmon_processor_extract(defmon_raw):  # noqa
     d_processor = DefmonProcessor()
@@ -65,7 +65,7 @@ def test_geoconfirmed_processor_extract(geoconfirmed_raw):  # noqa
     g_processor = GeoConfirmedProcessor()
 
     events = g_processor.extract_events(geoconfirmed_raw)
-    assert events[0].id == '1579544005448433664'
+    assert events[0].id == '1582105830240837632'
 
 def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     g_processor = GeoConfirmedProcessor()
@@ -73,4 +73,4 @@ def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     events = g_processor.extract_events(geoconfirmed_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][0]['id'] \
-        == '1579544005448433664'
+        == '1582105830240837632'
