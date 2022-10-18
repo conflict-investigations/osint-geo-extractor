@@ -15,8 +15,7 @@ class Downloader():
     """
     Should return a dict of downloaded JSON, json.loads()-ed
     """
-    @staticmethod
-    def download() -> Any:
+    def download(self) -> Any:
         raise NotImplementedError
 
     @staticmethod

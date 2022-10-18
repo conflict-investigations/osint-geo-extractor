@@ -1,6 +1,4 @@
-import json
 from dataclasses import asdict, dataclass, field
-from urllib import request
 from typing import Any, List, Optional
 
 from .base import Downloader

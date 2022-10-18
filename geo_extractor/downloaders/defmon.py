@@ -1,5 +1,3 @@
-import json
-from urllib import request
 from typing import Any
 
 from .base import Downloader
@@ -12,8 +10,5 @@ DEFMON_ENDPOINT = 'https://widgets.scribblemaps.com/api/maps/nBT8ffpeGH/smjsonLo
 
 class DefmonDownloader(Downloader):
 
-    @staticmethod
-    def download() -> Any:
-        resp = request.urlopen(DEFMON_ENDPOINT)
-        data = json.loads(resp.read().decode('utf-8'))
-        return data
+    def download(self) -> Any:
+        return self.request_json(DEFMON_ENDPOINT)
