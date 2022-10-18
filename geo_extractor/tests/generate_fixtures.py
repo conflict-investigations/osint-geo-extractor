@@ -23,18 +23,22 @@ def dump(data, filename):
 if not os.path.isdir(TEST_DATA_PATH):
     os.mkdir(TEST_DATA_PATH)
 
+print("Downloading Bellingcat data")
 bd = BellingcatDownloader()
 b_data = bd.download()
 dump(b_data, RAW_DATA_FILENAMES.BELLINGCAT)
 
+print("Downloading Cen4InfoRes data")
 cd = CenInfoResDownloader()
 c_data = cd.download()
 dump(c_data, RAW_DATA_FILENAMES.CENINFORES)
 
+print("Downloading Defmon data")
 dd = DefmonDownloader()
 d_data = dd.download()
 dump(d_data, RAW_DATA_FILENAMES.DEFMON)
 
+print("Downloading GeoConfirmed data")
 gd = GeoConfirmedDownloader()
 g_data = gd.download()
 dump(g_data, RAW_DATA_FILENAMES.GEOCONFIRMED)
