@@ -19,7 +19,6 @@ class BellingcatEvent():
     latitude: float
     longitude: float
     place_desc: str
-    title: str
     description: str
     sources: List['Source'] = field(default_factory=list)
     # Filters only relevant for Bellingcat entries
@@ -50,15 +49,11 @@ class BellingcatDownloader(Downloader):
     def __init__(self) -> None:
         self.data = {}  # type: dict[str, Any]
 
-    @staticmethod
-    def _download() -> dict:
+    def _download(self) -> dict:
         data = {}
-        data['events'] = json.loads(
-            request.urlopen(EVENTS_ENDPOINT).read().decode(ENCODING))
-        data['sources'] = json.loads(
-            request.urlopen(SOURCES_ENDPOINT).read().decode(ENCODING))
-        data['associations'] = json.loads(
-            request.urlopen(ASSOCIATIONS_ENDPOINT).read().decode(ENCODING))
+        data['events'] = self.request_json(EVENTS_ENDPOINT)
+        data['sources'] = self.request_json(SOURCES_ENDPOINT)
+        data['associations'] = self.request_json(ASSOCIATIONS_ENDPOINT)
         return data
 
     def _get_source(self, source_id: str, event_id: str) -> Source:
@@ -82,7 +77,6 @@ class BellingcatDownloader(Downloader):
             latitude=e.get('latitude'),
             longitude=e.get('longitude'),
             place_desc=e.get('location'),
-            title=None,
             description=e.get('description'),
             sources=list(self._get_source(s, eventid)
                          for s in e.get('sources')),
