@@ -79,6 +79,20 @@ Exporting to **GeoJSON**: Use `processors.format_as_geojson(data)`
 }
 ```
 
+## Tests#
+
+To obtain necessary testing data not shipped with the repository, install the
+package into your `virtualenv` via `pip install -e .`, navigate to
+`geo_extractor/tests` and run `python generate_fixtures.py`.
+
+The tests can be run via `pytest`:
+
+```
+$ pip install pytest
+$ PYTHONPATH=. pytest
+```
+
+To run a single test, use `pytest -k <test name>`.
 
 ## License
 MIT
