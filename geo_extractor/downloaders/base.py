@@ -50,13 +50,13 @@ class Downloader():
 
         r = 0
         while r < retries:
-            wait = BACKOFF_FACTOR * (2 ** (r - 1))
+            wait_time = BACKOFF_FACTOR * (2 ** (r - 1))
             try:
                 return json.loads(_fetch(_req))
             except HTTPError as e:
                 r += 1
                 print(f"HTTPError, retrying. e={e}")
-                time.sleep(wait)
+                time.sleep(wait_time)
                 continue
             except URLError as e:
                 r += 1
@@ -64,6 +64,6 @@ class Downloader():
                     print("Socket timeout, retrying")
                     continue
                 print(f"URLError, retrying. e={e}")
-                time.sleep(wait)
+                time.sleep(wait_time)
         # No success after max retries, raise error:
         raise HTTPError
