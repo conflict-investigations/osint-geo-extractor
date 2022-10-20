@@ -36,4 +36,4 @@ def test_texty_downloader():
     d = TextyDownloader()
     data = d.download()
     assert data[0]['title'] == 'Харків'
-    assert data[0]['date'].strftime('%Y-%m-%d') == '2022-02-25'
+    assert data[0]['date'] == '2022-02-25'
