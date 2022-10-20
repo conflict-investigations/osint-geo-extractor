@@ -23,6 +23,10 @@ def get_geoconfirmed_data() -> List[Event]:
     data = GeoConfirmedDownloader().download()
     return GeoConfirmedProcessor().extract_events(data)
 
+# def get_reukraine_data() -> List[Event]:
+#     data = ReukraineDownloader().download()
+#     return ReukraineProcessor().extract_events(data)
+
 def get_texty_data() -> List[Event]:
     data = TextyDownloader().download()
     return TextyProcessor().extract_events(data)

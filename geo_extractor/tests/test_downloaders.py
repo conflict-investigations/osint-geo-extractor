@@ -4,6 +4,7 @@ from geo_extractor.downloaders import (
     CenInfoResDownloader,
     DefmonDownloader,
     GeoConfirmedDownloader,
+    # ReukraineDownloader,
     TextyDownloader,
 )
 
@@ -21,6 +22,7 @@ def test_bellingcat_downloader():
     data = d.download()
     assert data[0]['id'] == 'CIV0001'
 
+@pytest.mark.skip(reason='Downloads large files')
 def test_ceninfores_downloader():
     d = CenInfoResDownloader()
     data = d.download()
@@ -31,6 +33,12 @@ def test_geoconfirmed_downloader():
     data = d.download()
     # "name": "C. Last 7 days",
     assert data['mapDataFolders'][2]['name'].startswith('C.')
+
+# @pytest.mark.skip(reason='Downloads large files')
+# def test_reukraine_downloader():
+#     d = ReukraineDownloader()
+#     data = d.download()
+#     assert data[0]['id'] == 'CIV0001'
 
 def test_texty_downloader():
     d = TextyDownloader()

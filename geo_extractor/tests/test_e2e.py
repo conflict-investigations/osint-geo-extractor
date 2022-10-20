@@ -4,6 +4,7 @@ from geo_extractor.processors import (
     CenInfoResProcessor,
     DefmonProcessor,
     GeoConfirmedProcessor,
+    # ReukraineProcessor,
     TextyProcessor,
     format_as_geojson
 )
@@ -13,6 +14,7 @@ from .fixtures import (  # noqa
     ceninfores_raw,
     defmon_raw,
     geoconfirmed_raw,
+    # reukraine_raw,
     texty_raw,
 )
 

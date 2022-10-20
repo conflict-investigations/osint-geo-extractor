@@ -11,6 +11,7 @@ class RAW_DATA_FILENAMES():
     CENINFORES:     str = 'ceninfores-raw.json'
     DEFMON:         str = 'defmon-raw.json'
     GEOCONFIRMED:   str = 'geoconfirmed-raw.json'
+    # REUKRAINE:      str = 'reukraine-raw.json'
     TEXTY:          str = 'texty-raw.json'
 
 @dataclass
@@ -19,4 +20,5 @@ class SOURCE_NAMES():
     CENINFORES:     str = 'CENINFORES'
     DEFMON:         str = 'DEFMON'
     GEOCONFIRMED:   str = 'GEOCONFIRMED'
+    # REUKRAINE:      str = 'REUKRAINE'
     TEXTY:          str = 'TEXTY'
