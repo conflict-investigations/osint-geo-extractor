@@ -28,12 +28,12 @@ class Downloader():
         raise NotImplementedError
 
     @staticmethod
-    def request_json(url: str,
-                     method: str = 'GET',
-                     request_data: Optional[bytes] = None,
-                     headers: Optional[Dict[str, str]] = None,
-                     retries: Optional[int] = MAX_RETRIES,
-                     timeout: Optional[int] = TIMEOUT) -> Any:
+    def request_url(url: str,
+                    method: str = 'GET',
+                    request_data: Optional[bytes] = None,
+                    headers: Optional[Dict[str, str]] = None,
+                    retries: Optional[int] = MAX_RETRIES,
+                    timeout: Optional[int] = TIMEOUT) -> Any:
         headers = {
             'Content-Type': 'application/json',
             'User-Agent': USER_AGENT,
@@ -52,7 +52,7 @@ class Downloader():
         while r < retries:
             wait_time = BACKOFF_FACTOR * (2 ** (r - 1))
             try:
-                return json.loads(_fetch(_req))
+                return _fetch(_req)
             except HTTPError as e:
                 r += 1
                 print(f"HTTPError, retrying. e={e}")

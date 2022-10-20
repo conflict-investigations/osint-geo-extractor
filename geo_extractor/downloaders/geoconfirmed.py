@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from .base import Downloader
@@ -12,4 +13,4 @@ class GeoConfirmedDownloader(Downloader):
     """
 
     def download(self) -> Any:
-        return self.request_json(GEOCONFIRMED_ENDPOINT)
+        return json.loads(self.request_url(GEOCONFIRMED_ENDPOINT))

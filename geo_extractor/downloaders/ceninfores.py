@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from .base import Downloader
@@ -13,8 +14,8 @@ class CenInfoResDownloader(Downloader):
     """
 
     def download(self) -> Any:
-        return self.request_json(
+        return json.loads(self.request_url(
             CENINFORES_JSON_ENDPOINT,
             request_data=b'{}',
             headers={'User-Agent': USER_AGENT}
-        )
+        ))

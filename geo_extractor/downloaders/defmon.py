@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from .base import Downloader
@@ -11,4 +12,4 @@ DEFMON_ENDPOINT = 'https://widgets.scribblemaps.com/api/maps/nBT8ffpeGH/smjsonLo
 class DefmonDownloader(Downloader):
 
     def download(self) -> Any:
-        return self.request_json(DEFMON_ENDPOINT)
+        return json.loads(self.request_url(DEFMON_ENDPOINT))

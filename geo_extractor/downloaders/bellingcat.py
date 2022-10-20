@@ -1,3 +1,4 @@
+import json
 from dataclasses import asdict, dataclass, field
 from typing import Any, List, Optional
 
@@ -49,9 +50,10 @@ class BellingcatDownloader(Downloader):
 
     def _download(self) -> dict:
         data = {}
-        data['events'] = self.request_json(EVENTS_ENDPOINT)
-        data['sources'] = self.request_json(SOURCES_ENDPOINT)
-        data['associations'] = self.request_json(ASSOCIATIONS_ENDPOINT)
+        data['events'] = json.loads(self.request_url(EVENTS_ENDPOINT))
+        data['sources'] = json.loads(self.request_url(SOURCES_ENDPOINT))
+        data['associations'] = json.loads(
+            self.request_url(ASSOCIATIONS_ENDPOINT))
         return data
 
     def _get_source(self, source_id: str, event_id: str) -> Source:
