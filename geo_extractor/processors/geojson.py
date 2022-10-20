@@ -35,25 +35,7 @@ def format_as_geojson(data: List[Event], indent: Optional[int] = None) -> str:
     formatted = []
     for f in features:
         formatted.append(f.__dict__)
-        # formatted.append(dict(
-        #     type=f.type,
-        #     id=f.id,
-        #     geometry=dict(
-        #         type='Point',
-        #         coordinates=(
-        #             f.geometry.coordinates[0],
-        #             f.geometry.coordinates[1]
-        #         ),
-        #     ),
-        #     properties=dict(
-        #         title=f.properties.title,
-        #         date=f.properties.date,
-        #         description=f.properties.description,
-        #         links=f.properties.links,
-        #         source=f.properties.source,
-        #     ),
-        # ))
     return json.dumps(dict(
         type='FeatureCollection',
         features=formatted
-    ), indent=indent)
+    ), indent=indent, ensure_ascii=False)
