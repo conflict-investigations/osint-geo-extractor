@@ -22,3 +22,7 @@ def get_defmon_data(eventtype: str = 'Shellings') -> List[Event]:
 def get_geoconfirmed_data() -> List[Event]:
     data = GeoConfirmedDownloader().download()
     return GeoConfirmedProcessor().extract_events(data)
+
+def get_texty_data() -> List[Event]:
+    data = TextyDownloader().download()
+    return TextyProcessor().extract_events(data)
