@@ -17,7 +17,7 @@ TEST_DATA_PATH = os.path.join(
 
 def dump(data, filename):
     with open(os.path.join(TEST_DATA_PATH, filename), 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, ensure_ascii=False)
 
 
 if not os.path.isdir(TEST_DATA_PATH):

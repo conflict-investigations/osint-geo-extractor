@@ -21,4 +21,4 @@ print(events_geojson)
 # import json
 # from geo_extractor.processors import format_as_featurecollection
 # events_geojson = format_as_featurecollection(events).__dict__
-# print(json.dumps(events_geojson))
+# print(json.dumps(events_geojson), ensure_ascii=False)
