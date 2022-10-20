@@ -29,3 +29,7 @@ def defmon_raw():
 @pytest.fixture
 def geoconfirmed_raw():
     return load(RAW_DATA_FILENAMES.GEOCONFIRMED)
+
+@pytest.fixture
+def texty_raw():
+    return load(RAW_DATA_FILENAMES.TEXTY)

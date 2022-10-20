@@ -4,6 +4,7 @@ from geo_extractor.processors import (
     CenInfoResProcessor,
     DefmonProcessor,
     GeoConfirmedProcessor,
+    TextyProcessor,
     format_as_geojson
 )
 
@@ -12,6 +13,7 @@ from .fixtures import (  # noqa
     ceninfores_raw,
     defmon_raw,
     geoconfirmed_raw,
+    texty_raw,
 )
 
 def test_bellingcat_processor_extract(bellingcat_raw):  # noqa
@@ -74,3 +76,17 @@ def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][0]['id'] \
         == '1582105830240837632'
+
+def test_texty_processor_extract(texty_raw):  # noqa
+    t_processor = TextyProcessor()
+
+    events = t_processor.extract_events(texty_raw)
+    assert events[0].title == 'Харків'
+
+def test_texty_geojson(texty_raw):  # noqa
+    t_processor = TextyProcessor()
+
+    events = t_processor.extract_events(texty_raw)
+    events_geojson = format_as_geojson(events)
+    assert json.loads(
+        events_geojson)['features'][0]['properties']['title'] == 'Харків'

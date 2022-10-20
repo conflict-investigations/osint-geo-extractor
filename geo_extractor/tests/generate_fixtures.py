@@ -6,6 +6,7 @@ from geo_extractor.downloaders import (
     CenInfoResDownloader,
     DefmonDownloader,
     GeoConfirmedDownloader,
+    TextyDownloader,
 )
 from geo_extractor.constants import RAW_DATA_FILENAMES
 
@@ -42,3 +43,8 @@ print("Downloading GeoConfirmed data")
 gd = GeoConfirmedDownloader()
 g_data = gd.download()
 dump(g_data, RAW_DATA_FILENAMES.GEOCONFIRMED)
+
+print("Downloading Texty data")
+td = TextyDownloader()
+t_data = td.download()
+dump(t_data, RAW_DATA_FILENAMES.TEXTY)
