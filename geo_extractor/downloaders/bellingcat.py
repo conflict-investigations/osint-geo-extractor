@@ -58,6 +58,10 @@ class BellingcatDownloader(Downloader):
 
     def _get_source(self, source_id: str, event_id: str) -> Source:
         src = self.data['sources'].get(source_id)
+        # Should not really happen but apparently Bellingcat's timemap
+        # sometimes returns source ids for sources that do not exist (yet).
+        if not src:
+            return None
         return Source(id=event_id, path=src.get('paths')[0],
                       description=src.get('description'))
 
@@ -78,8 +82,8 @@ class BellingcatDownloader(Downloader):
             longitude=e.get('longitude'),
             place_desc=e.get('location'),
             description=e.get('description'),
-            sources=list(self._get_source(s, eventid)
-                         for s in e.get('sources')),
+            sources=list(filter(None, (self._get_source(s, eventid)
+                         for s in e.get('sources')))),
             filters=list(self._get_association(a)
                          for a in e.get('associations')),
         )
