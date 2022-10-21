@@ -32,7 +32,7 @@ WAR_IN_UKRAINE_ID = 'f4a2b60dad'
 # https://www.scribblemaps.com/api/maps/19bUdxmFGh/smjson?cb=1665511749093
 
 
-class DefmonProcessor():
+class DefmonExtractor():
     @staticmethod
     def extract_events(data, eventtype: str = 'Shellings') -> List[Event]:
         overlays = data.get('overlays')

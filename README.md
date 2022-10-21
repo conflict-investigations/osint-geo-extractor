@@ -51,7 +51,7 @@ links            | List[str]
 
 Data formats: See `dataformats/`
 
-Exporting to **GeoJSON**: Use `processors.format_as_geojson(data)`
+Exporting to **GeoJSON**: Use `extractors.format_as_geojson(data)`
 
 ```json
 {

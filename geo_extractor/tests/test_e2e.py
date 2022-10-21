@@ -1,11 +1,11 @@
 import json
-from geo_extractor.processors import (
-    BellingcatProcessor,
-    CenInfoResProcessor,
-    DefmonProcessor,
-    GeoConfirmedProcessor,
-    # ReukraineProcessor,
-    TextyProcessor,
+from geo_extractor.extractors import (
+    BellingcatExtractor,
+    CenInfoResExtractor,
+    DefmonExtractor,
+    GeoConfirmedExtractor,
+    # ReukraineExtractor,
+    TextyExtractor,
     format_as_geojson
 )
 
@@ -18,77 +18,77 @@ from .fixtures import (  # noqa
     texty_raw,
 )
 
-def test_bellingcat_processor_extract(bellingcat_raw):  # noqa
-    b_processor = BellingcatProcessor()
+def test_bellingcat_extractor_extract(bellingcat_raw):  # noqa
+    b_extractor = BellingcatExtractor()
 
-    events = b_processor.extract_events(bellingcat_raw)
+    events = b_extractor.extract_events(bellingcat_raw)
     assert events[0].id == 'CIV0001'
 
 def test_bellingcat_geojson(bellingcat_raw):  # noqa
-    b_processor = BellingcatProcessor()
+    b_extractor = BellingcatExtractor()
 
-    events = b_processor.extract_events(bellingcat_raw)
+    events = b_extractor.extract_events(bellingcat_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][0]['id'] == 'CIV0001'
 
-def test_ceninfores_processor_extract(ceninfores_raw):  # noqa
-    c_processor = CenInfoResProcessor()
+def test_ceninfores_extractor_extract(ceninfores_raw):  # noqa
+    c_extractor = CenInfoResExtractor()
 
-    events = c_processor.extract_events(ceninfores_raw)
+    events = c_extractor.extract_events(ceninfores_raw)
     assert events[0].id == 'UW14492'
 
 def test_ceninfores_geojson(ceninfores_raw):  # noqa
-    c_processor = CenInfoResProcessor()
+    c_extractor = CenInfoResExtractor()
 
-    events = c_processor.extract_events(ceninfores_raw)
+    events = c_extractor.extract_events(ceninfores_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][0]['id'] == 'UW14492'
 
-def test_defmon_processor_extract(defmon_raw):  # noqa
-    d_processor = DefmonProcessor()
+def test_defmon_extractor_extract(defmon_raw):  # noqa
+    d_extractor = DefmonExtractor()
 
-    shellings_data = d_processor.extract_events(defmon_raw, 'Shellings')
+    shellings_data = d_extractor.extract_events(defmon_raw, 'Shellings')
     assert shellings_data[0].id == '4cd03b2245'
 
-    firms_data = d_processor.extract_events(defmon_raw, 'FIRMS Data')
+    firms_data = d_extractor.extract_events(defmon_raw, 'FIRMS Data')
     assert firms_data[0].id == '8c68f57511f24377b537975898379e70'
 
 def test_defmon_geojson(defmon_raw):  # noqa
-    d_processor = DefmonProcessor()
+    d_extractor = DefmonExtractor()
 
-    shellings_data = d_processor.extract_events(defmon_raw, 'Shellings')
+    shellings_data = d_extractor.extract_events(defmon_raw, 'Shellings')
     shellings_geojson = format_as_geojson(shellings_data)
     assert json.loads(shellings_geojson)['features'][0]['id'] == '4cd03b2245'
 
-    firms_data = d_processor.extract_events(defmon_raw, 'FIRMS Data')
+    firms_data = d_extractor.extract_events(defmon_raw, 'FIRMS Data')
     firms_geojson = format_as_geojson(firms_data)
     assert json.loads(firms_geojson)['features'][0]['id'] \
         == '8c68f57511f24377b537975898379e70'
 
-def test_geoconfirmed_processor_extract(geoconfirmed_raw):  # noqa
-    g_processor = GeoConfirmedProcessor()
+def test_geoconfirmed_extractor_extract(geoconfirmed_raw):  # noqa
+    g_extractor = GeoConfirmedExtractor()
 
-    events = g_processor.extract_events(geoconfirmed_raw)
+    events = g_extractor.extract_events(geoconfirmed_raw)
     assert events[0].id == '1582105830240837632'
 
 def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
-    g_processor = GeoConfirmedProcessor()
+    g_extractor = GeoConfirmedExtractor()
 
-    events = g_processor.extract_events(geoconfirmed_raw)
+    events = g_extractor.extract_events(geoconfirmed_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][0]['id'] \
         == '1582105830240837632'
 
-def test_texty_processor_extract(texty_raw):  # noqa
-    t_processor = TextyProcessor()
+def test_texty_extractor_extract(texty_raw):  # noqa
+    t_extractor = TextyExtractor()
 
-    events = t_processor.extract_events(texty_raw)
+    events = t_extractor.extract_events(texty_raw)
     assert events[0].title == 'Харків'
 
 def test_texty_geojson(texty_raw):  # noqa
-    t_processor = TextyProcessor()
+    t_extractor = TextyExtractor()
 
-    events = t_processor.extract_events(texty_raw)
+    events = t_extractor.extract_events(texty_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(
         events_geojson)['features'][0]['properties']['title'] == 'Харків'

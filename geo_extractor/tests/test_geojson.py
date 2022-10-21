@@ -3,7 +3,7 @@ from datetime import datetime
 
 from geo_extractor.dataformats import Event
 from geo_extractor.constants import SOURCE_NAMES
-from geo_extractor.processors import (
+from geo_extractor.extractors import (
     format_as_geojson,
 )
 

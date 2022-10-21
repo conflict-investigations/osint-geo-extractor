@@ -4,22 +4,24 @@ from typing import Any, List
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
 
-class BellingcatProcessor():
+class TextyExtractor():
     @staticmethod
     def extract_events(data: List[Any], eventtype: str = None) -> List[Event]:
-        DATE_INPUT_FORMAT = '%m/%d/%Y'
+        DATE_INPUT_FORMAT = '%Y-%m-%d'
         events = []
-        # Convert JSON strings to datetime objects, set links
         for e in data:
-            links = [s.get('path') for s in e.get('sources')]
+            links = [link] if (link := e.get('link')) else []
+            place = ' - '.join(filter(None,
+                (e.get('address'), e.get('place'), e.get('oblast'))
+            ))
             event = Event(
-                id=e.get('id'),
+                id=None,  # no sane way to obtain stable ids from a spreadsheet
                 date=datetime.strptime(e.get('date'), DATE_INPUT_FORMAT),
                 latitude=float(e.get('latitude')),
                 longitude=float(e.get('longitude')),
-                place_desc=e.get('place_desc'),
+                place_desc=place,
                 title=e.get('title'),
-                source=SOURCE_NAMES.BELLINGCAT,
+                source=SOURCE_NAMES.TEXTY,
                 links=links,
             )
             events.append(event)

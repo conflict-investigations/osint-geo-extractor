@@ -8,7 +8,7 @@ from ..dataformats import Event
 link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
 entry_extract_regex = r"ENTRY: (\w+)[\n]?"
 
-class CenInfoResProcessor():
+class CenInfoResExtractor():
     @staticmethod
     def extract_events(data, eventtype: str = None) -> List[Event]:
         DATE_INPUT_FORMAT = '%d/%m/%Y'

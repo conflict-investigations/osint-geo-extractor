@@ -8,7 +8,7 @@ from ..dataformats import Event
 link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
 geoconfirmed_regex = r"https://twitter\.com/GeoConfirmed/status/(\d+)([ ,\n]|$)"  # noqa
 
-class GeoConfirmedProcessor():
+class GeoConfirmedExtractor():
     @staticmethod
     def extract_events(data, eventtype: str = None) -> List[Event]:
 

@@ -5,7 +5,7 @@
 from datetime import datetime
 import math
 from geo_extractor.downloaders import DefmonDownloader
-from geo_extractor.processors import DefmonProcessor
+from geo_extractor.extractors import DefmonExtractor
 
 print('Downloading...')
 d = DefmonDownloader()
@@ -23,7 +23,7 @@ print('Finished downloading')
 # with open(RAW_DATA_FILENAMES.DEFMON, 'r') as f:
 #     data = json.load(f)
 
-p = DefmonProcessor()
+p = DefmonExtractor()
 events = p.extract_events(data, 'Shellings')
 
 # Only pick out events that match a certain lat/lng
