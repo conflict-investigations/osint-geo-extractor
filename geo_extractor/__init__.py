@@ -30,3 +30,27 @@ def get_geoconfirmed_data() -> List[Event]:
 def get_texty_data() -> List[Event]:
     data = TextyDownloader().download()
     return TextyExtractor().extract_events(data)
+
+EXTRACTORS = {
+    SOURCE_NAMES.BELLINGCAT:   BellingcatExtractor,
+    SOURCE_NAMES.CENINFORES:   CenInfoResExtractor,
+    SOURCE_NAMES.DEFMON:       DefmonExtractor,
+    SOURCE_NAMES.GEOCONFIRMED: GeoConfirmedExtractor,
+    SOURCE_NAMES.TEXTY:        TextyExtractor,
+}
+
+DOWNLOADERS = {
+    SOURCE_NAMES.BELLINGCAT:   BellingcatDownloader,
+    SOURCE_NAMES.CENINFORES:   CenInfoResDownloader,
+    SOURCE_NAMES.DEFMON:       DefmonDownloader,
+    SOURCE_NAMES.GEOCONFIRMED: GeoConfirmedDownloader,
+    SOURCE_NAMES.TEXTY:        TextyDownloader,
+}
+
+GET_FUNCS = {
+    SOURCE_NAMES.BELLINGCAT:   get_bellingcat_data,
+    SOURCE_NAMES.CENINFORES:   get_ceninfores_data,
+    SOURCE_NAMES.DEFMON:       get_defmon_data,
+    SOURCE_NAMES.GEOCONFIRMED: get_geoconfirmed_data,
+    SOURCE_NAMES.TEXTY:        get_texty_data,
+}
