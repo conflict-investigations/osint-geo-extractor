@@ -19,6 +19,7 @@ class BellingcatExtractor():
                 longitude=float(e.get('longitude')),
                 place_desc=e.get('place_desc'),
                 title=e.get('title'),
+                description=e.get('description'),
                 source=SOURCE_NAMES.BELLINGCAT,
                 links=links,
             )
