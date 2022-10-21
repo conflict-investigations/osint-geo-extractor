@@ -2,4 +2,4 @@
 *.pyc
 __pycache__
 dist/
-geo_extractor/tests/test_data/
+tests/test_data/
