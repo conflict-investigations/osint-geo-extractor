@@ -16,6 +16,7 @@ class CenInfoResDownloader(Downloader):
     def download(self) -> Any:
         return json.loads(self.request_url(
             CENINFORES_JSON_ENDPOINT,
+            method='POST',
             request_data=b'{}',
             headers={'User-Agent': USER_AGENT}
         ))
