@@ -3,8 +3,8 @@
 Library to extract geo-related information from databases such as
 [Bellingcat](https://ukraine.bellingcat.com/),
 [Cen4InfoRes](https://maphub.net/Cen4infoRes/russian-ukraine-monitor),
-[GeoConfirmed](https://geoconfirmed.azurewebsites.net/),
-[DefMon3](https://www.scribblemaps.com/maps/view/2022051301800/nBT8ffpeGH)
+[DefMon3](https://www.scribblemaps.com/maps/view/2022051301800/nBT8ffpeGH),
+[GeoConfirmed](https://geoconfirmed.azurewebsites.net/)
 and
 [Texty.org.ua](https://texty.org.ua/projects/107577/under-attack-what-and-when-russia-shelled-ukraine/).
 
@@ -82,7 +82,7 @@ Exporting to **GeoJSON**: Use `extractors.format_as_geojson(data)`
 }
 ```
 
-## Tests#
+## Tests
 
 To obtain necessary testing data not shipped with the repository, install the
 package into your `virtualenv` via `pip install -e .`, navigate to
