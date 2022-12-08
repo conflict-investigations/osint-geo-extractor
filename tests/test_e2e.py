@@ -35,14 +35,14 @@ def test_ceninfores_extractor_extract(ceninfores_raw):  # noqa
     c_extractor = CenInfoResExtractor()
 
     events = c_extractor.extract_events(ceninfores_raw)
-    assert events[0].id == 'UW14492'
+    assert events[0].id == 'UW0001'
 
 def test_ceninfores_geojson(ceninfores_raw):  # noqa
     c_extractor = CenInfoResExtractor()
 
     events = c_extractor.extract_events(ceninfores_raw)
     events_geojson = format_as_geojson(events)
-    assert json.loads(events_geojson)['features'][0]['id'] == 'UW14492'
+    assert json.loads(events_geojson)['features'][0]['id'] == 'UW0001'
 
 def test_defmon_extractor_extract(defmon_raw):  # noqa
     d_extractor = DefmonExtractor()
