@@ -27,7 +27,8 @@ def test_bellingcat_downloader():
 def test_ceninfores_downloader():
     d = CenInfoResDownloader()
     data = d.download()
-    assert data['geojson']['type'] == 'FeatureCollection'
+    assert data['type'] == 'FeatureCollection'
+    assert data['features'][0]['properties']['id'] == 'UW0001'
 
 @pytest.mark.online
 def test_geoconfirmed_downloader():
