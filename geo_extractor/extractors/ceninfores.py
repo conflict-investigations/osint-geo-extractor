@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 from typing import List, Optional
 
@@ -11,7 +10,8 @@ entry_extract_regex = r"ENTRY: (\w+)[\n]?"
 class CenInfoResExtractor():
     @staticmethod
     def extract_events(data, eventtype: str = None) -> List[Event]:
-        DATE_INPUT_FORMAT = '%d/%m/%Y'
+        # Input format is 2022-10-10T00:00:00 but only use date, not hours
+        DATE_INPUT_FORMAT = '%Y-%m-%d'
         events = []
 
         def parse_date(d: str) -> Optional[datetime]:
@@ -20,48 +20,42 @@ class CenInfoResExtractor():
             except ValueError:
                 return None
 
-        for feature in data['geojson']['features']:
+        for feature in data['features']:
             props = feature.get('properties', {})
             if not props.get('description'):
                 props['description'] = ''
 
             date = None
-            if (date_raw := props.get('title')):
+            if (date_raw := props.get('verifiedDate')):
                 date = parse_date(date_raw[:10])
 
-            links = []  # type: List[str]
-            if (url := props.get('media_url')):
-                links.append(url)
-            if (matches := re.findall(link_extract_regex,
-                                      props['description'])):
-                links.extend((link for link, _unused in matches))
+            # Description format has changed, no longer contains inline links
+            sources = []  # type: List[str]
+            if (url := props.get('url')):
+                sources.append(url)
 
-            # Remove duplicate URLs
-            sources = list(set(links))  # type: List[str]
-
-            entryid = None
-            if (candidate := re.findall(entry_extract_regex,
-                                        props['description'])):
-                entryid = candidate[0]
+            entryid = props.get('id')
 
             latitude, longitude = [0.0, 0.0]
             geometry = feature.get('geometry')
             # We're parsing GeoJSON, swap lat/lng
             if geometry.get('type') == 'Point':
                 longitude, latitude = geometry.get('coordinates')
-            elif geometry.get('type') == 'LineString':
-                # Be lazy and use first vector of LineString
-                longitude, latitude = geometry.get('coordinates')[0]
             # We need floats, not strings
             latitude = float(latitude)
             longitude = float(longitude)
+
+            country = props.get('country')
+            province = props.get('province')
+            city = props.get('city')
+            place_desc = f"{country} - {province} - {city}"
 
             event = Event(
                 id=entryid,
                 date=date,
                 latitude=latitude,
                 longitude=longitude,
-                place_desc=None,
+                place_desc=place_desc,
                 title=props.get('title'),
                 description=props['description'],
                 links=sources,
