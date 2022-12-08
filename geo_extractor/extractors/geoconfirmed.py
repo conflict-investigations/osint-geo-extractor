@@ -22,7 +22,7 @@ class GeoConfirmedExtractor():
 
         folders = filter(
             is_relevant,
-            data.get('mapDataFolders')
+            data.get('mapDataFolders', [])
         )
 
         # Example: "2022-10-10T16:20:00"
@@ -62,7 +62,7 @@ class GeoConfirmedExtractor():
                     place_desc=None,
                     title=item.get('name'),
                     description=item.get('description'),
-                    links=tuple(sources),
+                    links=sources,
                     source=SOURCE_NAMES.GEOCONFIRMED,
                 )
                 events.append(event)

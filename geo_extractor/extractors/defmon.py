@@ -60,7 +60,7 @@ class DefmonExtractor():
                 place_desc=event.get('title'),
                 title=None,
                 description=None,
-                links=(),
+                links=[],
                 source=SOURCE_NAMES.DEFMON,
             )
 

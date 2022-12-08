@@ -14,7 +14,7 @@ def format_feature(f: Event) -> Feature:
         id=f.id,
         geometry=Geometry(
             # GeoJSON swaps lat/lng
-            coordinates=(f.longitude, f.latitude),
+            coordinates=[f.longitude, f.latitude],
         ),
         properties=FeatureProperties(
             title=f.title,
@@ -27,7 +27,7 @@ def format_feature(f: Event) -> Feature:
 
 def format_as_featurecollection(data: List[Event]) -> FeatureCollection:
     return FeatureCollection(
-        features=tuple(map(format_feature, data)),
+        features=list(map(format_feature, data)),
     )
 
 def format_as_geojson(data: List[Event], indent: Optional[int] = None) -> str:
