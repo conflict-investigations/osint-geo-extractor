@@ -56,7 +56,7 @@ class BellingcatDownloader(Downloader):
             self.request_url(ASSOCIATIONS_ENDPOINT))
         return data
 
-    def _get_source(self, source_id: str, event_id: str) -> Source:
+    def _get_source(self, source_id: str, event_id: str) -> Optional[Source]:
         src = self.data['sources'].get(source_id)
         # Should not really happen but apparently Bellingcat's timemap
         # sometimes returns source ids for sources that do not exist (yet).
@@ -72,9 +72,10 @@ class BellingcatDownloader(Downloader):
                     key=a['filter_paths'][0],
                     value=a['filter_paths'][1]
                 )
+        return None
 
     def _mangle(self, e: dict) -> BellingcatEvent:
-        eventid = e.get('id')
+        eventid = e.get('id')  # type: Optional[str]
         return BellingcatEvent(
             id=eventid,
             date=e.get('date'),

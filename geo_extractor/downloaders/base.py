@@ -30,10 +30,10 @@ class Downloader():
     @staticmethod
     def request_url(url: str,
                     method: str = 'GET',
-                    request_data: Optional[bytes] = None,
-                    headers: Optional[Dict[str, str]] = None,
-                    retries: Optional[int] = MAX_RETRIES,
-                    timeout: Optional[int] = TIMEOUT) -> Any:
+                    request_data: bytes = None,
+                    headers: Dict[str, str] = None,
+                    retries: int = MAX_RETRIES,
+                    timeout: int = TIMEOUT) -> Any:
         headers = {
             'Content-Type': 'application/json',
             'User-Agent': USER_AGENT,
@@ -66,4 +66,4 @@ class Downloader():
                 print(f"URLError, retrying. e={e}")
                 time.sleep(wait_time)
         # No success after max retries, raise error:
-        raise HTTPError
+        raise HTTPError(code=429, reason='Too many retries', headers=None)

@@ -41,7 +41,7 @@ class TextyDownloader(Downloader):
     with blessing from project authors, provided credit is given
     """  # noqa
 
-    def _download(self) -> dict:
+    def _download(self) -> str:
         data = self.request_url(TEXTY_CSV_ENDPOINT)
         return data
 
