@@ -2,7 +2,7 @@
 
 Library to extract geo-related information from databases such as
 [Bellingcat](https://ukraine.bellingcat.com/),
-[Cen4InfoRes](https://maphub.net/Cen4infoRes/russian-ukraine-monitor),
+[Cen4InfoRes](https://eyesonrussia.org/),
 [DefMon3](https://www.scribblemaps.com/maps/view/2022051301800/nBT8ffpeGH),
 [GeoConfirmed](https://geoconfirmed.azurewebsites.net/)
 and
