@@ -4,7 +4,7 @@ from typing import Any, List, Optional
 
 @dataclass
 class Event():
-    id: str
+    id: Optional[str]
     date: datetime
     latitude: float
     longitude: float
