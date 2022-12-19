@@ -76,7 +76,8 @@ def main():
         print('No name given, downloading all')
         download_bellingcat()
         download_ceninfores()
-        download_defmon()
+        # XXX: Currently not working correctly due to data format change
+        # download_defmon()
         download_geoconfirmed()
         download_texty()
     else:

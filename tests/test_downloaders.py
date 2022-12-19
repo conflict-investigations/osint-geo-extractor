@@ -11,6 +11,8 @@ from geo_extractor.downloaders import (
 # XXX: Running this requires an active internet connection
 #      Downloading will take ~25Mb
 
+# XXX: Currently not working correctly due to data format change
+@pytest.mark.skip(reason="currently broken")
 @pytest.mark.online
 def test_defmon_downloader():
     d = DefmonDownloader()
