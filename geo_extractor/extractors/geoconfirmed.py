@@ -47,6 +47,10 @@ class GeoConfirmedExtractor():
                                         item.get('description'))):
                     sources.extend((link for link, _unused in links))
 
+                # Formerly, we used to use the tweet id as a stable key
+                # But the Azure application provides UUIDs, so use them
+                # instead
+                # This function kept as fallback
                 def get_id(desc: str) -> Optional[str]:
                     status = re.findall(geoconfirmed_regex, desc)
                     if status:
@@ -54,7 +58,7 @@ class GeoConfirmedExtractor():
                     return None
 
                 event = Event(
-                    id=get_id(item.get('description')),
+                    id=item.get('id', get_id(item.get('description'))),
                     date=parse_date(item.get('date') or ''),
                     # Coordinates swapped
                     latitude=float(item.get('coordinates')[1]),
