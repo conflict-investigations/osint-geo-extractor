@@ -78,5 +78,5 @@ jobs:
     - name: Archive and upload generated package
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.os }}-python-${{ matrix.python-version }}-${{ steps.generate-package.outputs.package_file }}
-        path: dist/${{ steps.generate-package.outputs.package_file }}
+        name: ${{ matrix.os }}-python-${{ matrix.python-version }}-${{ env.package_file }}
+        path: dist/${{ env.package_file }}
