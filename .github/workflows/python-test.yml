@@ -1,0 +1,82 @@
+name: Python tests
+
+on:
+  push:
+    paths:
+      - "geo_extractor/**"
+      - "tests/**"
+      - "setup.py"
+      - ".github/workflows/python-test.yml"
+  schedule:
+    # Run daily at 03:00
+    - cron: '0 3 * * *'
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10"]
+      fail-fast: false
+
+    steps:
+
+
+    - name: Check out repository code
+      uses: actions/checkout@v3
+
+    - name: Get current date
+      # Used for cache keys
+      run: echo "action_date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+    - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: 'setup.py'
+
+    - name: Cache test fixtures daily
+      id: cache-fixtures
+      uses: actions/cache@v3
+      with:
+        path: tests/test_data/
+        key: fixtures-${{ env.action_date }}
+
+    - name: Install pip dependencies
+      run: pip install -e .
+
+    - name: Install pytest and twine
+      run: pip install pytest twine
+
+    - name: Download and generate test fixtures
+      run: python generate_fixtures.py
+      if: steps.cache-fixtures.outputs.cache-hit != 'true'
+      working-directory: tests/
+
+    - name: Run pytest
+      run: pytest
+      env:
+        PYTHONPATH: .
+
+    - name: Run pytest online tests
+      run: pytest --online -k download
+      env:
+        PYTHONPATH: .
+
+    - name: Generate pip package
+      id: generate-package
+      run: |
+        python setup.py sdist
+        echo "package_file=$(ls dist/)" >> $GITHUB_ENV
+
+    - name: Check generated pip package
+      run: twine check dist/${{ env.package_file }}
+
+    - name: Archive and upload generated package
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}-python-${{ matrix.python-version }}-${{ steps.generate-package.outputs.package_file }}
+        path: dist/${{ steps.generate-package.outputs.package_file }}
