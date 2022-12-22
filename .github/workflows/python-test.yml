@@ -52,8 +52,8 @@ jobs:
     - name: Install pip dependencies
       run: pip install -e .
 
-    - name: Install pytest and twine
-      run: pip install pytest twine
+    - name: Install pytest
+      run: pip install pytest
 
     - name: Download and generate test fixtures
       run: python generate_fixtures.py
@@ -75,9 +75,6 @@ jobs:
       run: |
         python setup.py sdist
         echo "package_file=$(ls dist/)" >> $GITHUB_ENV
-
-    - name: Check generated pip package
-      run: twine check dist/${{ env.package_file }}
 
     - name: Archive and upload generated package
       uses: actions/upload-artifact@v3
