@@ -1,5 +1,9 @@
 name: Python tests
 
+permissions:
+  # Only clone the (current) repo
+  contents: read
+
 on:
   push:
     paths:
