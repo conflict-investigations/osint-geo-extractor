@@ -1,6 +1,7 @@
 from .bellingcat import BellingcatExtractor  # noqa
 from .ceninfores import CenInfoResExtractor  # noqa
 from .defmon import DefmonExtractor  # noqa
+from .defmon_spreadsheet import DefmonSpreadsheetExtractor  # noqa
 from .geoconfirmed import GeoConfirmedExtractor  # noqa
 from .texty import TextyExtractor  # noqa
 

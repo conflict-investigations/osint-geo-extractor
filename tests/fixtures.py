@@ -27,6 +27,13 @@ def defmon_raw():
     return load(RAW_DATA_FILENAMES.DEFMON)
 
 @pytest.fixture
+def defmon_spreadsheet_raw():
+    with open(os.path.join(
+            TEST_DATA_PATH, RAW_DATA_FILENAMES.DEFMON_CSV
+            ), 'r') as f:
+        return f.read()
+
+@pytest.fixture
 def geoconfirmed_raw():
     return load(RAW_DATA_FILENAMES.GEOCONFIRMED)
 

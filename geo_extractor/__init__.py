@@ -19,6 +19,11 @@ def get_defmon_data(eventtype: str = 'Shellings') -> List[Event]:
     data = DefmonDownloader().download()
     return DefmonExtractor().extract_events(data, eventtype)
 
+def get_defmon_spreadsheet_data() -> List[Event]:
+    data = DefmonSpreadsheetDownloader().download()
+    return DefmonSpreadsheetDownloaderExtractor()\
+        .extract_events(data)
+
 def get_geoconfirmed_data() -> List[Event]:
     data = GeoConfirmedDownloader().download()
     return GeoConfirmedExtractor().extract_events(data)

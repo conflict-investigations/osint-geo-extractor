@@ -3,6 +3,7 @@ from geo_extractor.downloaders import (
     BellingcatDownloader,
     CenInfoResDownloader,
     DefmonDownloader,
+    DefmonSpreadsheetDownloader,
     GeoConfirmedDownloader,
     # ReukraineDownloader,
     TextyDownloader,
@@ -18,6 +19,13 @@ def test_defmon_downloader():
     d = DefmonDownloader()
     data = d.download()
     assert 'meta' in data
+
+@pytest.mark.online
+def test_defmon_spreadsheet_downloader():
+    d = DefmonSpreadsheetDownloader()
+    data = d.download()
+    # First row of raw .csv file should be mostly empty
+    assert data[:28] == '"","","","","","","","","","'
 
 @pytest.mark.online
 def test_bellingcat_downloader():

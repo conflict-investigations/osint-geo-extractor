@@ -4,6 +4,7 @@ from geo_extractor.extractors import (
     BellingcatExtractor,
     CenInfoResExtractor,
     DefmonExtractor,
+    DefmonSpreadsheetExtractor,
     GeoConfirmedExtractor,
     # ReukraineExtractor,
     TextyExtractor,
@@ -14,6 +15,7 @@ from .fixtures import (  # noqa
     bellingcat_raw,
     ceninfores_raw,
     defmon_raw,
+    defmon_spreadsheet_raw,
     geoconfirmed_raw,
     # reukraine_raw,
     texty_raw,
@@ -69,6 +71,15 @@ def test_defmon_geojson(defmon_raw):  # noqa
     firms_geojson = format_as_geojson(firms_data)
     assert json.loads(firms_geojson)['features'][0]['id'] \
         == '8c68f57511f24377b537975898379e70'
+
+def test_defmon_spreadsheet_extractor_extract(defmon_spreadsheet_raw):  # noqa
+    ds_extractor = DefmonSpreadsheetExtractor()
+
+    shellings_data = ds_extractor.extract_events(defmon_spreadsheet_raw)
+    assert shellings_data[0].date.strftime('%Y-%m-%d') == '2022-06-09'
+    assert shellings_data[0].latitude == 48.735848
+    assert shellings_data[0].longitude == 38.209602
+    assert shellings_data[0].place_desc == 'Bilohorivka'
 
 def test_geoconfirmed_extractor_extract(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()

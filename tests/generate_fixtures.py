@@ -6,6 +6,7 @@ from geo_extractor.downloaders import (
     BellingcatDownloader,
     CenInfoResDownloader,
     DefmonDownloader,
+    DefmonSpreadsheetDownloader,
     GeoConfirmedDownloader,
     # ReukraineDownloader,
     TextyDownloader,
@@ -40,6 +41,15 @@ def download_defmon():
     d_data = dd.download()
     dump(d_data, RAW_DATA_FILENAMES.DEFMON)
 
+def download_defmon_spreadsheet():
+    print("Downloading Defmon spreadsheet data")
+    dsd = DefmonSpreadsheetDownloader()
+    ds_data = dsd.download()
+    with open(os.path.join(
+            TEST_DATA_PATH, RAW_DATA_FILENAMES.DEFMON_CSV
+            ), 'w') as f:
+        f.write(ds_data)
+
 def download_geoconfirmed():
     print("Downloading GeoConfirmed data")
     gd = GeoConfirmedDownloader()
@@ -69,6 +79,7 @@ def main():
         'bellingcat': download_bellingcat,
         'ceninfores': download_ceninfores,
         'defmon': download_defmon,
+        'defmon_spreadsheet': download_defmon_spreadsheet,
         'geoconfirmed': download_geoconfirmed,
         'texty': download_texty,
     }
@@ -78,6 +89,7 @@ def main():
         download_ceninfores()
         # XXX: Currently not working correctly due to data format change
         # download_defmon()
+        download_defmon_spreadsheet()
         download_geoconfirmed()
         download_texty()
     else:
