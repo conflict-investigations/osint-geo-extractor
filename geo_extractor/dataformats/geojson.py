@@ -16,6 +16,7 @@ class FeatureProperties():
     title: Optional[str] = None
     date: Optional[str] = None
     description: Optional[str] = None
+    place_desc: Optional[str] = None
     links: List[str] = field(default_factory=list)
     source: Optional[str] = None
 

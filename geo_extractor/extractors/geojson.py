@@ -20,6 +20,7 @@ def format_feature(f: Event) -> Feature:
             title=f.title,
             date=(f.date.strftime('%Y-%m-%d') if f.date else None),
             description=f.description,
+            place_desc=f.place_desc,
             links=f.links,
             source=f.source,
         ),
