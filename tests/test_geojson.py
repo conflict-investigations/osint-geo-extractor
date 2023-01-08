@@ -12,13 +12,13 @@ TEST_EVENT = Event(
     date=datetime(2022, 2, 24),
     latitude=30.0,
     longitude=50.0,
-    place_desc=None,
+    place_desc='Near Avdiivka',
     title='Title',
     description='Description',
     links=['https://foo.bar'],
     source=SOURCE_NAMES.CENINFORES,
 )
-EXPECTED_STR_PLAIN = '{"type": "FeatureCollection", "features": [{"type": "Feature", "id": "ABC1", "geometry": {"type": "Point", "coordinates": [50.0, 30.0]}, "properties": {"title": "Title", "date": "2022-02-24", "description": "Description", "links": ["https://foo.bar"], "source": "CENINFORES"}}]}'  # noqa
+EXPECTED_STR_PLAIN = '{"type": "FeatureCollection", "features": [{"type": "Feature", "id": "ABC1", "geometry": {"type": "Point", "coordinates": [50.0, 30.0]}, "properties": {"title": "Title", "date": "2022-02-24", "description": "Description", "place_desc": "Near Avdiivka", "links": ["https://foo.bar"], "source": "CENINFORES"}}]}'  # noqa
 EXPECTED_STR_INDENTED = """{
   "type": "FeatureCollection",
   "features": [
@@ -36,6 +36,7 @@ EXPECTED_STR_INDENTED = """{
         "title": "Title",
         "date": "2022-02-24",
         "description": "Description",
+        "place_desc": "Near Avdiivka",
         "links": [
           "https://foo.bar"
         ],
