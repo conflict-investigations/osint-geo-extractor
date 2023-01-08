@@ -85,7 +85,7 @@ def test_geoconfirmed_extractor_extract(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()
 
     events = g_extractor.extract_events(geoconfirmed_raw)
-    assert events[-1].id == '4ec87853-5bac-44d0-1473-08dabc42150c'
+    assert events[-1].id == '02845209-9d18-4e24-953f-08daee4f2faa'
 
 def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()
@@ -93,7 +93,7 @@ def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     events = g_extractor.extract_events(geoconfirmed_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(events_geojson)['features'][-1]['id'] \
-        == '4ec87853-5bac-44d0-1473-08dabc42150c'
+        == '02845209-9d18-4e24-953f-08daee4f2faa'
 
 def test_texty_extractor_extract(texty_raw):  # noqa
     t_extractor = TextyExtractor()
