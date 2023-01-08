@@ -1,7 +1,7 @@
 import csv
 import io
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from ..constants import SOURCE_NAMES
 from ..dataformats import Event
@@ -19,13 +19,14 @@ class DefmonSpreadsheetExtractor():
         location_mapping = []
 
         cities = zipped[6]
+        alternate_names = zipped[5]
         latitudes = zipped[7]
         longitudes = zipped[8]
         for pos, item in enumerate(cities):
             if pos == 0:
                 continue  # skip headers
             location_mapping.append(
-                (item, latitudes[pos], longitudes[pos])
+                (item, alternate_names[pos], latitudes[pos], longitudes[pos])
             )
 
         DATE_INPUT_FORMAT = '%Y%m%d'
@@ -36,6 +37,14 @@ class DefmonSpreadsheetExtractor():
             except ValueError:
                 return None
 
+        def _backup_coords(place_name: str) -> Optional[
+                Tuple[float, float]]:
+            try:
+                pos = cities.index(place_name)
+                return (latitudes[pos], longitudes[pos])
+            except ValueError:
+                pass
+
         events = []
         for day in zipped:
             if not day[0].startswith('202'):  # 20220623, 20230101, ...
@@ -45,15 +54,26 @@ class DefmonSpreadsheetExtractor():
                 if not item:
                     # Skip non-'X' entries
                     continue
-                loc = location_mapping[pos]
+                place_name, alternate_name, lat, lng = location_mapping[pos]
+                desc = None
+                if alternate_name:
+                    desc = 'Alternate place names: %s' % alternate_name
+                if not all((lat, lng)):
+                    # Fetch coordinates from other entry with same place name
+                    lat, lng = _backup_coords(place_name)
+                    desc = ', '.join(filter(None,
+                               [desc, 'coordinates imprecise'])).capitalize()
+                if not all((lat, lng)):
+                    # Skip entries without coordinates
+                    continue
                 locations.append(Event(
                     id=None,
                     date=_date(day[0]),
-                    latitude=float(loc[1]),
-                    longitude=float(loc[2]),
-                    place_desc=loc[0],
-                    title=None,
-                    description=None,
+                    latitude=float(lat),
+                    longitude=float(lng),
+                    place_desc=place_name,
+                    title='Shelling at %s' % place_name,
+                    description=desc,
                     links=[],
                     source=SOURCE_NAMES.DEFMON,
                 ))
