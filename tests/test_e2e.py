@@ -77,9 +77,9 @@ def test_defmon_spreadsheet_extractor_extract(defmon_spreadsheet_raw):  # noqa
 
     shellings_data = ds_extractor.extract_events(defmon_spreadsheet_raw)
     assert shellings_data[0].date.strftime('%Y-%m-%d') == '2022-06-09'
-    assert shellings_data[0].latitude == 48.735848
-    assert shellings_data[0].longitude == 38.209602
-    assert shellings_data[0].place_desc == 'Bilohorivka'
+    assert shellings_data[0].latitude == 50.382503
+    assert shellings_data[0].longitude == 36.061166
+    assert shellings_data[0].place_desc == 'Udy'
 
 def test_geoconfirmed_extractor_extract(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()
