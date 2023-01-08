@@ -25,7 +25,7 @@ def test_defmon_spreadsheet_downloader():
     d = DefmonSpreadsheetDownloader()
     data = d.download()
     # First row of raw .csv file should be mostly empty
-    assert data[:28] == '"","","","","","","","","","'
+    assert data[:28] == ',,,,,,,,Count,37,32,24,39,6,'
 
 @pytest.mark.online
 def test_bellingcat_downloader():
