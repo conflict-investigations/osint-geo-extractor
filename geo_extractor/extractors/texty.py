@@ -6,7 +6,7 @@ from ..dataformats import Event
 
 class TextyExtractor():
     @staticmethod
-    def extract_events(data: List[Any], eventtype: str = None) -> List[Event]:
+    def extract_events(data: List[Any]) -> List[Event]:
         DATE_INPUT_FORMAT = '%Y-%m-%d'
         events = []
         for e in data:

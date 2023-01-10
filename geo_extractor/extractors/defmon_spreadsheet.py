@@ -3,13 +3,13 @@ import io
 from datetime import datetime
 from typing import List, Optional, Tuple
 
-from ..constants import SOURCE_NAMES
+from ..constants import FALLBACK_DATE, SOURCE_NAMES
 from ..dataformats import Event
 
 class DefmonSpreadsheetExtractor():
 
     @staticmethod
-    def extract_events(data: str, eventtype: str = None) -> List[Event]:
+    def extract_events(data: str) -> List[Event]:
         proxy = io.StringIO(data)  # Emulate real file to be read line by line
         next(proxy)  # Skip first row
         csv_reader = csv.reader(proxy, delimiter=',')
@@ -31,19 +31,23 @@ class DefmonSpreadsheetExtractor():
 
         DATE_INPUT_FORMAT = '%Y%m%d'
 
-        def _date(date_string: str) -> Optional[datetime]:
+        def _date(date_string: str) -> datetime:
             try:
                 return datetime.strptime(date_string, DATE_INPUT_FORMAT)
             except ValueError:
-                return None
+                # Input string was invalid:
+                return FALLBACK_DATE
 
         def _backup_coords(place_name: str) -> Optional[
                 Tuple[float, float]]:
+            """
+            Fetch coordinates from other entry with same place name
+            """
             try:
                 pos = cities.index(place_name)
                 return (latitudes[pos], longitudes[pos])
             except ValueError:
-                pass
+                return None
 
         events = []
         for day in zipped:
@@ -60,7 +64,7 @@ class DefmonSpreadsheetExtractor():
                     desc = 'Alternate place names: %s' % alternate_name
                 if not all((lat, lng)):
                     # Fetch coordinates from other entry with same place name
-                    lat, lng = _backup_coords(place_name)
+                    lat, lng = _backup_coords(place_name) or (None, None)
                     desc = ', '.join(filter(None,
                                [desc, 'coordinates imprecise'])).capitalize()
                 if not all((lat, lng)):

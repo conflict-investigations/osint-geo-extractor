@@ -21,7 +21,7 @@ class Datapoint():
     # https://www.delftstack.com/howto/python/dataclass-to-json-in-python/
     # Return date as string when dumping to json
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         conv = asdict(self)
         conv['date'] = datetime.strftime(conv['date'], '%Y-%m-%d')
         return conv
@@ -32,5 +32,5 @@ class URLWithDatapoints():
     url: Optional[str] = None
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         return asdict(self)

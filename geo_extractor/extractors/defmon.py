@@ -34,7 +34,8 @@ WAR_IN_UKRAINE_ID = 'f4a2b60dad'
 
 class DefmonExtractor():
     @staticmethod
-    def extract_events(data, eventtype: str = 'Shellings') -> List[Event]:
+    def extract_events(data: Any,
+                       eventtype: str = 'Shellings') -> List[Event]:
         overlays = data.get('overlays')
 
         war_in_ukraine = list(filter(
@@ -49,8 +50,8 @@ class DefmonExtractor():
         DATE_INPUT_FORMAT = '%Y%m%d'
 
         def format_event(date: str, event: dict[str, Any]) -> Event:
-            date_parsed = datetime.strptime(date, DATE_INPUT_FORMAT)
-            coordinates = event.get('points')[0]
+            date_parsed: datetime = datetime.strptime(date, DATE_INPUT_FORMAT)
+            coordinates: List[float] = event.get('points', [[0.0, 0.0],])[0]
             return Event(
                 id=event.get('id'),
                 date=date_parsed,
@@ -65,8 +66,7 @@ class DefmonExtractor():
             )
 
         def is_relevant_aspect(overlay: dict, eventtype: str) -> bool:
-            # Use 'x in y' to match partial strings
-            return (overlay.get('name') or '').startswith(eventtype)
+            return overlay.get('name', '').startswith(eventtype)
 
         for day in days:
             # 'aspect' is e.g. 'Shellings', 'FIRMS Data'

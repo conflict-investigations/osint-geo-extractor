@@ -15,7 +15,7 @@ class Event():
     links: List[str] = field(default_factory=list)
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         conv = asdict(self)
         conv['date'] = datetime.strftime(conv['date'], '%Y-%m-%d')
         return conv

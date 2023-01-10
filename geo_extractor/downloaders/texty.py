@@ -5,29 +5,30 @@ from datetime import datetime
 from typing import Any, List, Optional
 
 from .base import Downloader
+from ..constants import FALLBACK_DATE
 
 TEXTY_CSV_ENDPOINT = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyFuA7nxANnn7BwXn7az5D5L-V7yKnETgTybfKSIGmoYz2qVkc6FWSH7f0l-1Gt_dML1VpywPUzXwp/pub?gid=1376631421&single=true&output=csv'  # noqa
 
 @dataclass
 class TextyEvent():
-    title: str
+    title: Optional[str]
     latitude: float
     longitude: float
     date: datetime
-    place: str
+    place: Optional[str]
     coordinates_accurate: bool
     civilian_objects: bool
-    link: str
-    address: str
-    projectile_type: str
-    oblast: str
+    link: Optional[str]
+    address: Optional[str]
+    projectile_type: Optional[str]
+    oblast: Optional[str]
     artillery_mortars_tanks: bool
     air: bool
     missile: bool
     number_of_missiles: int
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         conv = asdict(self)
         if conv['date']:
             conv['date'] = datetime.strftime(conv['date'], '%Y-%m-%d')
@@ -64,26 +65,29 @@ class TextyDownloader(Downloader):
                     return [float(lat), float(lng)]
                 # Missing longitude
                 except ValueError:
-                    return None
+                    return [0.0, 0.0]
 
         DATE_INPUT_FORMAT_UNDERSCORES = '%Y-%m-%d'
         DATE_INPUT_FORMAT_SLASHES = '%d/%m/%Y'
 
         def _date(date_string: str) -> datetime:
             if not date_string:
-                return None
+                return FALLBACK_DATE
             try:
                 return datetime.strptime(
                     date_string, DATE_INPUT_FORMAT_UNDERSCORES)
             except ValueError:
-                return datetime.strptime(
-                    date_string, DATE_INPUT_FORMAT_SLASHES)
+                try:
+                    return datetime.strptime(
+                        date_string, DATE_INPUT_FORMAT_SLASHES)
+                except ValueError:
+                    return FALLBACK_DATE
 
-        def _no_missiles(missile_string: str) -> int:
+        def _numer_of_missiles(missile_string: str) -> int:
             try:
                 return int(missile_string)
             except ValueError:
-                return None
+                return 0
 
         # This is a geo-focussed library, thus we need to weed out entries with
         # insufficient geo data
@@ -105,7 +109,7 @@ class TextyDownloader(Downloader):
             artillery_mortars_tanks=bool(row[11]),
             air=bool(row[12]),
             missile=bool(row[13]),
-            number_of_missiles=_no_missiles(row[14]),
+            number_of_missiles=_numer_of_missiles(row[14]),
         )
 
     def download(self) -> List[TextyEvent]:

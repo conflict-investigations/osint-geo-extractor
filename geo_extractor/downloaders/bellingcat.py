@@ -13,19 +13,19 @@ ENCODING = 'utf-8'
 
 @dataclass
 class BellingcatEvent():
-    id: str
-    date: str
-    latitude: float
-    longitude: float
-    place_desc: str
-    description: str
+    id: Optional[str]
+    date: Optional[str]
+    latitude: Optional[float]
+    longitude: Optional[float]
+    place_desc: Optional[str]
+    description: Optional[str]
     sources: List['Source'] = field(default_factory=list)
     # Filters only relevant for Bellingcat entries
     filters: List['Association'] = field(default_factory=list)
 
     # https://www.delftstack.com/howto/python/dataclass-to-json-in-python/
     @property
-    def __dict__(self) -> dict:
+    def __dict__(self) -> dict:  # type: ignore
         return asdict(self)
 
 @dataclass
@@ -56,7 +56,8 @@ class BellingcatDownloader(Downloader):
             self.request_url(ASSOCIATIONS_ENDPOINT))
         return data
 
-    def _get_source(self, source_id: str, event_id: str) -> Optional[Source]:
+    def _get_source(self, source_id: Optional[str], event_id: str
+                    ) -> Optional[Source]:
         src = self.data['sources'].get(source_id)
         # Should not really happen but apparently Bellingcat's timemap
         # sometimes returns source ids for sources that do not exist (yet).
@@ -65,7 +66,8 @@ class BellingcatDownloader(Downloader):
         return Source(id=event_id, path=src.get('paths')[0],
                       description=src.get('description'))
 
-    def _get_association(self, association: str) -> Optional[Association]:
+    def _get_association(self, association: Optional[str]
+                         ) -> Optional[Association]:
         for a in self.data['associations']:
             if a.get('id') == association:
                 return Association(
@@ -74,8 +76,8 @@ class BellingcatDownloader(Downloader):
                 )
         return None
 
-    def _mangle(self, e: dict) -> BellingcatEvent:
-        eventid = e.get('id')  # type: Optional[str]
+    def _mangle(self, e: dict[str, Any]) -> BellingcatEvent:
+        eventid: str = e.get('id', '')  # should always have an id tho
         return BellingcatEvent(
             id=eventid,
             date=e.get('date'),
@@ -84,13 +86,13 @@ class BellingcatDownloader(Downloader):
             place_desc=e.get('location'),
             description=e.get('description'),
             sources=list(filter(None, (self._get_source(s, eventid)
-                         for s in e.get('sources')))),
-            filters=list(self._get_association(a)
-                         for a in e.get('associations')),
+                         for s in e.get('sources', [])))),
+            filters=list(filter(None, (self._get_association(a)
+                         for a in e.get('associations', [])))),
         )
 
     # TODO: Static method conversion? carrying instance state?
-    def download(self) -> Any:
+    def download(self) -> List[dict[Any, Any]]:
         self.data = self._download()
         return [self._mangle(e).__dict__ for e in self.data['events']]
 

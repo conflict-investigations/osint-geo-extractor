@@ -8,7 +8,7 @@ class Geometry():
     coordinates: List[float] = field(default_factory=list)
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         return asdict(self)
 
 @dataclass
@@ -21,18 +21,18 @@ class FeatureProperties():
     source: Optional[str] = None
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         return asdict(self)
 
 @dataclass
 class Feature():
     type: str = 'Feature'
-    id: str = None
+    id: Optional[str] = None
     geometry: Geometry = field(default_factory=Geometry)
     properties: FeatureProperties = field(default_factory=FeatureProperties)
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         return asdict(self)
 
 @dataclass
@@ -41,5 +41,5 @@ class FeatureCollection():
     features: List['Feature'] = field(default_factory=list)
 
     @property
-    def __dict__(self) -> Any:
+    def __dict__(self) -> Any:  # type: ignore
         return asdict(self)

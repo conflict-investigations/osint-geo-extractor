@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Any, List
 
-from ..constants import SOURCE_NAMES
+from ..constants import FALLBACK_DATE, SOURCE_NAMES
 from ..dataformats import Event
 
 link_extract_regex = r"(https?://.+?)([ ,\n\\<>]|$)"
@@ -9,23 +9,23 @@ entry_extract_regex = r"ENTRY: (\w+)[\n]?"
 
 class CenInfoResExtractor():
     @staticmethod
-    def extract_events(data, eventtype: str = None) -> List[Event]:
+    def extract_events(data: Any) -> List[Event]:
         # Input format is 2022-10-10T00:00:00 but only use date, not hours
         DATE_INPUT_FORMAT = '%Y-%m-%d'
         events = []
 
-        def parse_date(d: str) -> Optional[datetime]:
+        def parse_date(d: str) -> datetime:
             try:
                 return datetime.strptime(d, DATE_INPUT_FORMAT)
             except ValueError:
-                return None
+                return FALLBACK_DATE
 
         for feature in data['features']:
             props = feature.get('properties', {})
             if not props.get('description'):
                 props['description'] = ''
 
-            date = None
+            date = FALLBACK_DATE
             if (date_raw := props.get('verifiedDate')):
                 date = parse_date(date_raw[:10])
 

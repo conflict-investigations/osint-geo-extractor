@@ -1,4 +1,3 @@
-import json
 import socket
 import time
 from typing import Any, Dict, Optional
@@ -30,8 +29,8 @@ class Downloader():
     @staticmethod
     def request_url(url: str,
                     method: str = 'GET',
-                    request_data: bytes = None,
-                    headers: Dict[str, str] = None,
+                    request_data: Optional[bytes] = None,
+                    headers: Optional[Dict[str, str]] = None,
                     retries: int = MAX_RETRIES,
                     timeout: int = TIMEOUT) -> Any:
         headers = {
@@ -66,4 +65,5 @@ class Downloader():
                 print(f"URLError, retrying. e={e}")
                 time.sleep(wait_time)
         # No success after max retries, raise error:
-        raise HTTPError(code=429, reason='Too many retries', headers=None)
+        raise HTTPError(url=url, code=429, msg='Too many retries',
+                        hdrs=None, fp=None)  # type: ignore

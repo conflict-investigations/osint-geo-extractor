@@ -6,7 +6,7 @@ from ..dataformats import Event
 
 class BellingcatExtractor():
     @staticmethod
-    def extract_events(data: List[Any], eventtype: str = None) -> List[Event]:
+    def extract_events(data: List[Any]) -> List[Event]:
         DATE_INPUT_FORMAT = '%m/%d/%Y'
         events = []
         # Convert JSON strings to datetime objects, set links
