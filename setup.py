@@ -16,11 +16,10 @@ setup(
     description='Geo-related info extraction library for Bellingcat, Cen4InfoRes etc',  # noqa
     long_description=long_description,
     long_description_content_type='text/markdown',
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     install_requires=None,
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
