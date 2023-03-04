@@ -84,15 +84,17 @@ def test_defmon_spreadsheet_extractor_extract(defmon_spreadsheet_raw):  # noqa
 def test_geoconfirmed_extractor_extract(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()
 
-    events = g_extractor.extract_events(geoconfirmed_raw)
-    assert events[-1].id == '02845209-9d18-4e24-953f-08daee4f2faa'
+    events = sorted(g_extractor.extract_events(geoconfirmed_raw),
+                    key=lambda x: x.date)
+    assert events[0].id == '02845209-9d18-4e24-953f-08daee4f2faa'
 
 def test_geoconfirmed_geojson(geoconfirmed_raw):  # noqa
     g_extractor = GeoConfirmedExtractor()
 
-    events = g_extractor.extract_events(geoconfirmed_raw)
+    events = sorted(g_extractor.extract_events(geoconfirmed_raw),
+                    key=lambda x: x.date)
     events_geojson = format_as_geojson(events)
-    assert json.loads(events_geojson)['features'][-1]['id'] \
+    assert json.loads(events_geojson)['features'][0]['id'] \
         == '02845209-9d18-4e24-953f-08daee4f2faa'
 
 def test_texty_extractor_extract(texty_raw):  # noqa
