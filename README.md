@@ -32,6 +32,7 @@ Convenience functions:
 - `get_bellingcat_data`
 - `get_ceninfores_data`
 - `get_defmon_data`
+- `get_defmon_spreadsheet_data`
 - `get_geoconfirmed_data`
 - `get_texty_data`
 
