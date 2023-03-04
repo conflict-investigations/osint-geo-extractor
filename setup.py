@@ -7,7 +7,7 @@ long_description = (parent / "README.md").read_text()
 setup(
     name='osint-geo-extractor',
     author='conflict-investigations',
-    version='0.0.9',
+    version='0.0.10',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
