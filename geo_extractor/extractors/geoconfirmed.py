@@ -69,7 +69,7 @@ class GeoConfirmedExtractor():
         )
 
         # Example: "2022-10-10T16:20:00"
-        DATE_INPUT_FORMAT: str = "%Y-%m-%dT%H:%M%S"
+        DATE_INPUT_FORMAT: str = "%Y-%m-%dT%H:%M:%S"
 
         def parse_date(d: str) -> datetime:
             # Note: e.g. twitter.com/GeoConfirmed/status/1579567301963440128
