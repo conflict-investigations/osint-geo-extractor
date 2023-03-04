@@ -21,7 +21,7 @@ TEST_DATA_PATH = os.path.join(
 
 def dump(data, filename):
     with open(os.path.join(TEST_DATA_PATH, filename), 'w') as f:
-        json.dump(data, f, ensure_ascii=False)
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 def download_bellingcat():
     print("Downloading Bellingcat data")
