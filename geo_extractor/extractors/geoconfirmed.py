@@ -113,6 +113,10 @@ class GeoConfirmedExtractor():
                     links=sources,
                     source=SOURCE_NAMES.GEOCONFIRMED,
                 )
+                # XXX REMOVEME ugly hack for faulty GeoConfirmed data
+                # e.g. dates like 1527-02-04T18:23:00
+                if event.date < datetime(2000, 1, 1):
+                    event.date = FALLBACK_DATE
                 events.append(event)
 
         return events
