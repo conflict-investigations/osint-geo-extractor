@@ -99,7 +99,7 @@ def test_texty_extractor_extract(texty_raw):  # noqa
     t_extractor = TextyExtractor()
 
     events = t_extractor.extract_events(texty_raw)
-    assert events[0].title == 'Харків'
+    assert events[0].place_desc == 'Одеська'
 
 def test_texty_geojson(texty_raw):  # noqa
     t_extractor = TextyExtractor()
@@ -107,4 +107,4 @@ def test_texty_geojson(texty_raw):  # noqa
     events = t_extractor.extract_events(texty_raw)
     events_geojson = format_as_geojson(events)
     assert json.loads(
-        events_geojson)['features'][0]['properties']['title'] == 'Харків'
+        events_geojson)['features'][0]['properties']['title'] == 'Одеса'

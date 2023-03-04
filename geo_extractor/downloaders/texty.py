@@ -15,17 +15,19 @@ class TextyEvent():
     latitude: float
     longitude: float
     date: datetime
-    place: Optional[str]
+    place_name: Optional[str]
+    place_type: Optional[str]
     coordinates_accurate: bool
     civilian_objects: bool
     link: Optional[str]
-    address: Optional[str]
-    projectile_type: Optional[str]
     oblast: Optional[str]
     artillery_mortars_tanks: bool
     air: bool
     missile: bool
     number_of_missiles: int
+    kamikaze_drones: bool
+    projectile_type: Optional[str]
+    address: Optional[str]
 
     @property
     def __dict__(self) -> Any:  # type: ignore
@@ -95,21 +97,23 @@ class TextyDownloader(Downloader):
             return None
 
         return TextyEvent(
-            title=row[0] or None,
+            title=row[0] or None,  # not really a title, more of an area
             latitude=coords[0],
             longitude=coords[1],
             date=_date(row[3]),
-            place=row[4] or None,
-            coordinates_accurate=_coords_accurate(row[5]),
-            civilian_objects=bool(row[6]),
-            link=row[7] or None,
-            address=row[8] or None,
-            projectile_type=row[9] or None,
-            oblast=row[10] or None,
-            artillery_mortars_tanks=bool(row[11]),
-            air=bool(row[12]),
-            missile=bool(row[13]),
-            number_of_missiles=_numer_of_missiles(row[14]),
+            place_name=row[4] or None,
+            place_type=row[5] or None,
+            coordinates_accurate=_coords_accurate(row[6]),
+            civilian_objects=bool(row[7]),
+            link=row[8] or None,
+            oblast=row[9] or None,
+            artillery_mortars_tanks=bool(row[10]),
+            air=bool(row[11]),
+            missile=bool(row[12]),
+            number_of_missiles=_numer_of_missiles(row[13]),
+            kamikaze_drones=bool(row[14]),
+            projectile_type=row[15] or None,
+            address=row[16] or None,
         )
 
     def download(self) -> List[TextyEvent]:

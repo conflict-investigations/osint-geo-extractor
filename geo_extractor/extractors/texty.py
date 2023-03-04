@@ -12,7 +12,7 @@ class TextyExtractor():
         for e in data:
             links = [link] if (link := e.get('link')) else []
             place = ' - '.join(filter(None,
-                (e.get('address'), e.get('place'), e.get('oblast'))
+                (e.get('address'), e.get('place_name'), e.get('oblast'))
             ))
             event = Event(
                 id=None,  # no sane way to obtain stable ids from a spreadsheet
