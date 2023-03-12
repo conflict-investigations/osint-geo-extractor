@@ -26,6 +26,12 @@ class GeoConfirmedExtractor():
                 # return FALLBACK_DATE
                 return None
 
+        def find_links(text: str, sources: List[str]) -> List[str]:
+            if (links := re.findall(link_extract_regex, text)):
+                return [link for link, _unused in links
+                        if link not in sources]
+            return []
+
         for item in data:
 
             if not item.get('description'):
@@ -34,16 +40,19 @@ class GeoConfirmedExtractor():
                 continue
 
             sources = []  # type: List[str]
-            if (src := item.get('originalSource')):
-                sources.append(src)
-            if (geo := item.get('geolocation')):
-                sources.append(geo)
 
-            if (links := re.findall(link_extract_regex,
-                                    item.get('description'))):
-                sources.extend(
-                    [link for link, _unused in links if link not in sources]
-                )
+            if (src := item.get('originalSource')):
+                if not src.startswith('http'):
+                    sources.extend(find_links(src, sources))
+                else:
+                    sources.append(src)
+            if (geo := item.get('geolocation')):
+                if not geo.startswith('http'):
+                    sources.extend(find_links(geo, sources))
+                else:
+                    sources.append(geo)
+
+            sources.extend(find_links(item.get('description'), sources))
 
             if not sources:
                 # This library is used to look up links, so discard items
