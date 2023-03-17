@@ -33,13 +33,14 @@ class Downloader():
                     headers: Optional[Dict[str, str]] = None,
                     retries: int = MAX_RETRIES,
                     timeout: int = TIMEOUT) -> Any:
-        headers = {
+        _headers = {
             'Content-Type': 'application/json',
             'User-Agent': USER_AGENT,
             'Accept-Language': 'en-US,en',
         }
-        headers.update(**headers)
-        _req = request.Request(url=url, headers=headers, method=method)
+        if headers:
+            _headers.update(**headers)
+        _req = request.Request(url=url, headers=_headers, method=method)
 
         def _fetch(req: request.Request) -> str:
             with request.urlopen(req,
