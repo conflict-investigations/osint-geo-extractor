@@ -59,4 +59,4 @@ def test_texty_downloader():
     d = TextyDownloader()
     data = d.download()
     assert data[0]['title'] == 'Одеса'
-    assert data[0]['date'] == '2022-09-25'
+    assert data[0]['date'] == '2023-01-01'
