@@ -58,5 +58,5 @@ def test_geoconfirmed_downloader():
 def test_texty_downloader():
     d = TextyDownloader()
     data = d.download()
-    assert data[0]['title'] == 'Одеса'
-    assert data[0]['date'] == '2023-01-01'
+    assert data[0]['title'] == 'Площанка'
+    assert data[0]['date'] == '2022-02-24'
