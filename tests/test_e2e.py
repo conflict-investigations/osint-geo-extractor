@@ -25,14 +25,19 @@ def test_bellingcat_extractor_extract(bellingcat_raw):  # noqa
     b_extractor = BellingcatExtractor()
 
     events = b_extractor.extract_events(bellingcat_raw)
-    assert events[0].id == 'UT8SE0'
+
+    # TODO: Temporary checking if empty lat/lng values are included
+    outlier = [e for e in events if e.id == 'EHIWGJ'][0]
+    assert outlier.latitude == 0.0
+
+    assert events[-1].id == 'CIV0003'
 
 def test_bellingcat_geojson(bellingcat_raw):  # noqa
     b_extractor = BellingcatExtractor()
 
     events = b_extractor.extract_events(bellingcat_raw)
     events_geojson = format_as_geojson(events)
-    assert json.loads(events_geojson)['features'][0]['id'] == 'UT8SE0'
+    assert json.loads(events_geojson)['features'][-1]['id'] == 'CIV0003'
 
 def test_ceninfores_extractor_extract(ceninfores_raw):  # noqa
     c_extractor = CenInfoResExtractor()
