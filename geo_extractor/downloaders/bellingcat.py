@@ -4,10 +4,14 @@ from typing import Any, List, Optional
 
 from .base import Downloader
 
-BELLINGCAT_BASE = 'https://ukraine.bellingcat.com/ukraine-server/api/ukraine'
-EVENTS_ENDPOINT = BELLINGCAT_BASE + '/export_events/deeprows'
-SOURCES_ENDPOINT = BELLINGCAT_BASE + '/export_sources/deepids'
-ASSOCIATIONS_ENDPOINT = BELLINGCAT_BASE + '/export_associations/deeprows'
+# New unified endpoint:
+BELLINGCAT_ENDPOINT = 'https://bellingcat-embeds.ams3.cdn.digitaloceanspaces.com/production/ukr/timemap/api.json'  # noqa
+
+# Old endpoints:
+BELLINGCAT_BASE = 'https://bellingcat-embeds.ams3.cdn.digitaloceanspaces.com/production/ukr'
+EVENTS_ENDPOINT = BELLINGCAT_BASE + '/timemap/events.json'
+SOURCES_ENDPOINT = BELLINGCAT_BASE + '/timemap/sources.json'
+ASSOCIATIONS_ENDPOINT = BELLINGCAT_BASE + '/timemap/associations.json'
 
 ENCODING = 'utf-8'
 
@@ -50,10 +54,12 @@ class BellingcatDownloader(Downloader):
 
     def _download(self) -> dict:
         data = {}
-        data['events'] = json.loads(self.request_url(EVENTS_ENDPOINT))
-        data['sources'] = json.loads(self.request_url(SOURCES_ENDPOINT))
+        data['events'] = json.loads(
+                self.request_url(EVENTS_ENDPOINT).read().decode(ENCODING))
+        data['sources'] = json.loads(
+                self.request_url(SOURCES_ENDPOINT).read().decode(ENCODING))
         data['associations'] = json.loads(
-            self.request_url(ASSOCIATIONS_ENDPOINT))
+            self.request_url(ASSOCIATIONS_ENDPOINT).read().decode(ENCODING))
         return data
 
     def _get_source(self, source_id: Optional[str], event_id: str

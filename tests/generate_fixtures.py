@@ -54,7 +54,10 @@ def download_geoconfirmed():
     print("Downloading GeoConfirmed data")
     gd = GeoConfirmedDownloader()
     g_data = gd.download()
-    dump(g_data, RAW_DATA_FILENAMES.GEOCONFIRMED)
+    # TODO: Workaround for handling kml/xml instead of json
+    with open(os.path.join(TEST_DATA_PATH,
+                           RAW_DATA_FILENAMES.GEOCONFIRMED), 'w') as f:
+        f.write(g_data)
 
 # def download_reukraine():
 #     print("Downloading Reukraine data")

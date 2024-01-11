@@ -42,11 +42,8 @@ class Downloader():
             _headers.update(**headers)
         _req = request.Request(url=url, headers=_headers, method=method)
 
-        def _fetch(req: request.Request) -> str:
-            with request.urlopen(req,
-                                 data=request_data,
-                                 timeout=timeout) as resp:
-                return resp.read().decode(ENCODING)
+        def _fetch(req: request.Request) -> Any:
+            return request.urlopen(req, data=request_data, timeout=timeout)
 
         r = 0
         while r < retries:

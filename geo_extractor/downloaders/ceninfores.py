@@ -3,6 +3,7 @@ from typing import Any
 
 from .base import Downloader
 
+ENCODING = 'utf-8'
 CENINFORES_GEOJSON_ENDPOINT = 'https://eyesonrussia.org/events.geojson'
 
 # Old maphub integration, left for posterity's sake
@@ -17,4 +18,8 @@ class CenInfoResDownloader(Downloader):
     """
 
     def download(self) -> Any:
-        return json.loads(self.request_url(CENINFORES_GEOJSON_ENDPOINT))
+        return json.loads(
+            self.request_url(CENINFORES_GEOJSON_ENDPOINT)
+                .read()
+                .decode(ENCODING)
+        )

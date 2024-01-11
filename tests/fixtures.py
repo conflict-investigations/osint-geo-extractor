@@ -35,7 +35,10 @@ def defmon_spreadsheet_raw():
 
 @pytest.fixture
 def geoconfirmed_raw():
-    return load(RAW_DATA_FILENAMES.GEOCONFIRMED)
+    # TODO: Workaround for handling kml/xml instead of json
+    with open(os.path.join(TEST_DATA_PATH,
+                           RAW_DATA_FILENAMES.GEOCONFIRMED), 'r') as f:
+        return f.read()
 
 # @pytest.fixture
 # def reukraine_raw():

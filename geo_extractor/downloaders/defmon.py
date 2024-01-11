@@ -3,6 +3,7 @@ from typing import Any
 
 from .base import Downloader
 
+ENCODING = 'utf-8'
 DEFMON_ENDPOINT = 'https://widgets.scribblemaps.com/api/maps/nBT8ffpeGH/smjsonLocal'  # noqa
 
 # TODO: "Archived" map with older entries
@@ -12,4 +13,8 @@ DEFMON_ENDPOINT = 'https://widgets.scribblemaps.com/api/maps/nBT8ffpeGH/smjsonLo
 class DefmonDownloader(Downloader):
 
     def download(self) -> Any:
-        return json.loads(self.request_url(DEFMON_ENDPOINT))
+        return json.loads(
+            self.request_url(DEFMON_ENDPOINT)
+                .read()
+                .decode(ENCODING)
+        )

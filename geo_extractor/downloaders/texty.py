@@ -7,6 +7,7 @@ from typing import Any, List, Optional
 from .base import Downloader
 from ..constants import FALLBACK_DATE
 
+ENCODING = 'utf-8'
 TEXTY_CSV_ENDPOINT = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyFuA7nxANnn7BwXn7az5D5L-V7yKnETgTybfKSIGmoYz2qVkc6FWSH7f0l-1Gt_dML1VpywPUzXwp/pub?gid=1376631421&single=true&output=csv'  # noqa
 
 @dataclass
@@ -45,8 +46,7 @@ class TextyDownloader(Downloader):
     """  # noqa
 
     def _download(self) -> str:
-        data = self.request_url(TEXTY_CSV_ENDPOINT)
-        return data
+        return self.request_url(TEXTY_CSV_ENDPOINT).read().decode(ENCODING)
 
     @staticmethod
     def _mangle(row: list) -> Optional[TextyEvent]:
