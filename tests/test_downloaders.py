@@ -31,7 +31,7 @@ def test_defmon_spreadsheet_downloader():
 def test_bellingcat_downloader():
     d = BellingcatDownloader()
     data = d.download()
-    assert data[0]['id'] == 'CIV0001'
+    assert data[0]['id'] == 'Q0YLYJ'
 
 @pytest.mark.online
 def test_ceninfores_downloader():
@@ -58,5 +58,5 @@ def test_geoconfirmed_downloader():
 def test_texty_downloader():
     d = TextyDownloader()
     data = d.download()
-    assert data[0]['title'] == 'Площанка'
-    assert data[0]['date'] == '2022-02-24'
+    assert data[0]['title'] == 'Харків'
+    assert data[0]['date'] == '2022-02-25'
