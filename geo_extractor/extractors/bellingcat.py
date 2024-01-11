@@ -15,8 +15,8 @@ class BellingcatExtractor():
             event = Event(
                 id=e.get('id'),
                 date=datetime.strptime(e.get('date'), DATE_INPUT_FORMAT),
-                latitude=float(e.get('latitude')),
-                longitude=float(e.get('longitude')),
+                latitude=float(lat if (lat := e.get('latitude')) else 0),
+                longitude=float(lng if (lng := e.get('longitude')) else 0),
                 place_desc=e.get('place_desc'),
                 title=e.get('title'),
                 description=e.get('description'),
