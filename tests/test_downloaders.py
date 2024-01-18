@@ -31,7 +31,7 @@ def test_defmon_spreadsheet_downloader():
 def test_bellingcat_downloader():
     d = BellingcatDownloader()
     data = d.download()
-    assert data[0]['id'] == 'Q0YLYJ'
+    assert data[-1]['id'] == 'CIV0003'
 
 @pytest.mark.online
 def test_ceninfores_downloader():
