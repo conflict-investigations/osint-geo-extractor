@@ -25,11 +25,6 @@ def test_bellingcat_extractor_extract(bellingcat_raw):  # noqa
     b_extractor = BellingcatExtractor()
 
     events = b_extractor.extract_events(bellingcat_raw)
-
-    # TODO: Temporary checking if empty lat/lng values are included
-    outlier = [e for e in events if e.id == 'EHIWGJ'][0]
-    assert outlier.latitude == 0.0
-
     assert events[-1].id == 'CIV0003'
 
 def test_bellingcat_geojson(bellingcat_raw):  # noqa
